@@ -13,7 +13,7 @@ class MapStoreTest {
     @Test
     fun markerSelectionAndDismissalDriveSheetState() = runTest {
         val clinic = Clinic("c1", "tbilisi", "Clinic", "Care", "Address", 1.0, 2.0, null)
-        val store = MapStoreFactory().create(listOf(clinic))
+        val store = MapViewModel(listOf(clinic)).store
         var latest = MapContract.State(listOf(clinic))
         store.start(backgroundScope)
         with(store) { backgroundScope.subscribe { states.collect { latest = it } } }

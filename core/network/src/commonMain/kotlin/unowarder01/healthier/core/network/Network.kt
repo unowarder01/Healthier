@@ -16,12 +16,12 @@ import unowarder01.healthier.core.common.AppResult
 
 data class NetworkEnvironment(
     val baseUrl: String,
-    val isDebug: Boolean,
+    val isDebug: Boolean
 )
 
 fun createHttpClient(
     engine: HttpClientEngine,
-    environment: NetworkEnvironment,
+    environment: NetworkEnvironment
 ): HttpClient = HttpClient(engine) {
     expectSuccess = false
     install(ContentNegotiation) {

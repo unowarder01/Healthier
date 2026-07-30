@@ -7,7 +7,7 @@ fun createAndroidClinicCache(context: Context): ClinicCache {
     val database = buildHealthierDatabase(
         Room.databaseBuilder<HealthierDatabase>(
             context = context.applicationContext,
-            name = context.getDatabasePath("healthier.db").absolutePath,
+            name = context.getDatabasePath("healthier.db").absolutePath
         )
     )
     return RoomClinicCache(database.clinicDao())

@@ -11,7 +11,7 @@ import pro.respawn.flowmvi.dsl.store
 fun <S : MVIState, I : MVIIntent, A : MVIAction> healthierStore(
     name: String,
     initial: S,
-    handle: suspend PipelineContext<S, I, A>.(I) -> Unit,
+    handle: suspend PipelineContext<S, I, A>.(I) -> Unit
 ): Store<S, I, A> = store(initial) {
     configure {
         this.name = name

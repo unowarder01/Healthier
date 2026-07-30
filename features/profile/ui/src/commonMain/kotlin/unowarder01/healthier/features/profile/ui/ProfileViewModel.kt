@@ -1,91 +1,73 @@
 package unowarder01.healthier.features.profile.ui
 
-import org.koin.dsl.module
+import pro.respawn.flowmvi.api.PipelineContext
 import unowarder01.healthier.core.common.AppLanguage
-import unowarder01.healthier.core.common.AppResult
 import unowarder01.healthier.core.common.AppTheme
-import unowarder01.healthier.core.mvi.healthierStore
-import unowarder01.healthier.core.mvi.currentState
-import unowarder01.healthier.core.platform.PhotoPicker
-import unowarder01.healthier.core.presentation.StoreViewModel
+import unowarder01.healthier.core.presentation.viewmodel.BaseViewModel
 import unowarder01.healthier.features.profile.domain.ProfileRepository
-import unowarder01.healthier.features.profile.domain.UpdateAppLanguageUseCase
-import unowarder01.healthier.features.profile.domain.UpdateAppThemeUseCase
-import unowarder01.healthier.features.profile.domain.UpdateProfileUseCase
+import unowarder01.healthier.features.profile.domain.usecase.UpdateAppLanguageUseCase
+import unowarder01.healthier.features.profile.domain.usecase.UpdateAppThemeUseCase
+import unowarder01.healthier.features.profile.domain.usecase.UpdateProfileParams
+import unowarder01.healthier.features.profile.domain.usecase.UpdateProfileUseCase
+import unowarder01.healthier.features.profile.ui.ProfileContract.Action
+import unowarder01.healthier.features.profile.ui.ProfileContract.Action.ShowLanguageSelector
+import unowarder01.healthier.features.profile.ui.ProfileContract.Action.ShowMessage
+import unowarder01.healthier.features.profile.ui.ProfileContract.Action.ShowProfileEditor
+import unowarder01.healthier.features.profile.ui.ProfileContract.Action.ShowThemeSelector
+import unowarder01.healthier.features.profile.ui.ProfileContract.Intent
+import unowarder01.healthier.features.profile.ui.ProfileContract.Intent.RequestLanguageSelector
+import unowarder01.healthier.features.profile.ui.ProfileContract.Intent.RequestMessage
+import unowarder01.healthier.features.profile.ui.ProfileContract.Intent.RequestProfileEditor
+import unowarder01.healthier.features.profile.ui.ProfileContract.Intent.RequestThemeSelector
+import unowarder01.healthier.features.profile.ui.ProfileContract.Intent.SaveProfile
+import unowarder01.healthier.features.profile.ui.ProfileContract.Intent.SelectLanguage
+import unowarder01.healthier.features.profile.ui.ProfileContract.Intent.SelectTheme
+import unowarder01.healthier.features.profile.ui.ProfileContract.State
 
-class ProfileStoreFactory(
+private typealias Context = PipelineContext<State, Intent, Action>
+
+class ProfileViewModel(
     private val repository: ProfileRepository,
     private val updateProfile: UpdateProfileUseCase,
     private val updateLanguage: UpdateAppLanguageUseCase,
     private val updateTheme: UpdateAppThemeUseCase,
-    private val photoPicker: PhotoPicker,
+    language: AppLanguage,
+    theme: AppTheme
+) : BaseViewModel<State, Intent, Action>(
+    initialState = State(repository.profile.value, language, theme),
+    storeKey = "profile.overview"
 ) {
-    fun create(language: AppLanguage, theme: AppTheme) =
-        healthierStore<ProfileContract.State, ProfileContract.Intent, ProfileContract.Action>(
-            name = "profile.overview",
-            initial = ProfileContract.State(repository.profile.value, language, theme),
-        ) { intent ->
-            when (intent) {
-                ProfileContract.Intent.StartEdit -> updateState {
-                    copy(
-                        editing = true,
-                        draftName = profile.name,
-                        draftAvatar = profile.avatarReference,
-                        message = null,
+    override suspend fun Context.handleIntent(intent: Intent) {
+        when (intent) {
+            RequestProfileEditor -> withState {
+                action(ShowProfileEditor(profile, language))
+            }
+            RequestLanguageSelector -> withState {
+                action(ShowLanguageSelector(language))
+            }
+            RequestThemeSelector -> withState {
+                action(ShowThemeSelector(language, theme))
+            }
+            is SaveProfile -> {
+                updateProfile(
+                    UpdateProfileParams(
+                        name = intent.name,
+                        avatarReference = intent.avatarReference
                     )
-                }
-                ProfileContract.Intent.DismissEdit -> updateState { copy(editing = false) }
-                is ProfileContract.Intent.NameChanged -> updateState { copy(draftName = intent.value) }
-                ProfileContract.Intent.PickAvatar -> {
-                    when (val result = photoPicker.pickAvatar()) {
-                        is AppResult.Success -> updateState { copy(draftAvatar = result.value) }
-                        is AppResult.Failure -> updateState { copy(message = ProfileContract.Message.NotConfigured) }
-                    }
-                }
-                ProfileContract.Intent.SaveProfile -> {
-                    val snapshot = currentState()
-                    updateProfile(snapshot.draftName, snapshot.draftAvatar)
-                    updateState {
-                        copy(
-                            profile = repository.profile.value,
-                            editing = false,
-                            message = null,
-                        )
-                    }
-                }
-                ProfileContract.Intent.ShowLanguageSelector ->
-                    updateState { copy(showLanguageSelector = true, message = null) }
-                ProfileContract.Intent.ShowThemeSelector ->
-                    updateState { copy(showThemeSelector = true, message = null) }
-                is ProfileContract.Intent.SelectLanguage -> {
-                    updateLanguage(intent.language)
-                    updateState { copy(language = intent.language, showLanguageSelector = false) }
-                }
-                is ProfileContract.Intent.SelectTheme -> {
-                    updateTheme(intent.theme)
-                    updateState { copy(theme = intent.theme, showThemeSelector = false) }
-                }
-                is ProfileContract.Intent.ShowMessage ->
-                    updateState { copy(message = intent.message) }
-                ProfileContract.Intent.DismissOverlay -> updateState {
-                    copy(
-                        showLanguageSelector = false,
-                        showThemeSelector = false,
-                        message = null,
-                    )
-                }
+                )
+                updateState { copy(profile = repository.profile.value) }
+            }
+            is SelectLanguage -> {
+                updateLanguage(intent.language)
+                updateState { copy(language = intent.language) }
+            }
+            is SelectTheme -> {
+                updateTheme(intent.theme)
+                updateState { copy(theme = intent.theme) }
+            }
+            is RequestMessage -> withState {
+                action(ShowMessage(language, intent.message))
             }
         }
-}
-
-class ProfileViewModel(
-    factory: ProfileStoreFactory,
-    language: AppLanguage,
-    theme: AppTheme,
-) : StoreViewModel<ProfileContract.State, ProfileContract.Intent, ProfileContract.Action>(
-    factory.create(language, theme)
-)
-
-val profileUiModule = module {
-    factory { ProfileStoreFactory(get(), get(), get(), get(), get()) }
+    }
 }

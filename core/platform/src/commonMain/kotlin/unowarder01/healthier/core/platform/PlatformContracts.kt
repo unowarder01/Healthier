@@ -5,7 +5,7 @@ import unowarder01.healthier.core.common.AppResult
 enum class PlatformKind {
     Android,
     IOS,
-    Web,
+    Web
 }
 
 expect val currentPlatformKind: PlatformKind
@@ -14,7 +14,7 @@ enum class SocialProvider {
     Apple,
     Google,
     Meta,
-    Telegram,
+    Telegram
 }
 
 data class AuthToken(val value: String)
@@ -40,7 +40,7 @@ interface ExternalUrlLauncher {
 enum class MapAvailability {
     Native,
     Demo,
-    Unavailable,
+    Unavailable
 }
 
 interface MapRenderer {

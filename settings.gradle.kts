@@ -44,7 +44,7 @@ include(
     ":core:platform",
 )
 
-listOf("splash", "auth", "city", "home", "health", "map", "profile").forEach { feature ->
+listOf("splash", "auth", "city", "health", "map", "profile").forEach { feature ->
     include(
         ":features:$feature:domain",
         ":features:$feature:data",

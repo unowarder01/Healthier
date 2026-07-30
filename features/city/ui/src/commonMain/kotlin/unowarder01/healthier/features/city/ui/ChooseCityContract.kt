@@ -11,7 +11,7 @@ object ChooseCityContract {
         val query: String = "",
         val cities: List<City> = emptyList(),
         val loadingCityId: String? = null,
-        val errorCityId: String? = null,
+        val errorCityId: String? = null
     ) : MVIState
 
     sealed interface Intent : MVIIntent {
@@ -22,5 +22,11 @@ object ChooseCityContract {
 
     sealed interface Action : MVIAction {
         data class NavigateHome(val clinics: List<Clinic>) : Action
+    }
+
+    interface Listener {
+        fun onScreenShown()
+        fun onQueryChanged(query: String)
+        fun onCitySelected(cityId: String)
     }
 }

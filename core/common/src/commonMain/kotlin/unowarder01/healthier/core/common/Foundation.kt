@@ -19,14 +19,35 @@ sealed interface AppError {
     data class Unknown(val safeMessage: String) : AppError
 }
 
-enum class AppLanguage(val code: String) {
-    Georgian("ka"),
-    English("en"),
-    Russian("ru");
+enum class AppLanguage(
+    val code: String,
+    val englishName: String,
+    val nativeName: String,
+    val flag: String
+) {
+    Georgian(
+        code = "ka",
+        englishName = "Georgian",
+        nativeName = "ქართული",
+        flag = "🇬🇪"
+    ),
+    English(
+        code = "en",
+        englishName = "English",
+        nativeName = "English",
+        flag = "🇬🇧"
+    ),
+    Russian(
+        code = "ru",
+        englishName = "Russian",
+        nativeName = "Русский",
+        flag = "🇷🇺"
+    );
 
     companion object {
-        fun fromCode(code: String?): AppLanguage =
-            entries.firstOrNull { it.code == code } ?: English
+        fun fromCode(code: String?) = entries
+            .firstOrNull { it.code == code }
+            ?: Georgian
     }
 }
 
@@ -34,26 +55,4 @@ enum class AppTheme {
     System,
     Light,
     Dark;
-}
-
-interface DispatcherProvider {
-    val default: CoroutineDispatcher
-    val io: CoroutineDispatcher
-}
-
-object DefaultDispatcherProvider : DispatcherProvider {
-    override val default: CoroutineDispatcher = Dispatchers.Default
-    override val io: CoroutineDispatcher = Dispatchers.Default
-}
-
-fun interface AppLogger {
-    fun log(message: String)
-}
-
-fun interface Mapper<F, T> {
-    fun map(from: F): T
-}
-
-fun interface SuspendUseCase<P, R> {
-    suspend operator fun invoke(parameters: P): R
 }

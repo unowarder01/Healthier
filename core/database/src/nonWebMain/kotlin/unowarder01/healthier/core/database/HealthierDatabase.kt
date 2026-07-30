@@ -26,7 +26,7 @@ data class ClinicEntity(
     val latitude: Double,
     val longitude: Double,
     val imageUrl: String?,
-    val updatedAtEpochMillis: Long = 0,
+    val updatedAtEpochMillis: Long = 0
 )
 
 @Dao
@@ -50,7 +50,7 @@ interface ClinicDao {
 @Database(
     entities = [ClinicEntity::class],
     version = 2,
-    exportSchema = true,
+    exportSchema = true
 )
 @ConstructedBy(HealthierDatabaseConstructor::class)
 abstract class HealthierDatabase : RoomDatabase() {
@@ -70,7 +70,7 @@ fun buildHealthierDatabase(builder: RoomDatabase.Builder<HealthierDatabase>): He
         .build()
 
 class RoomClinicCache(
-    private val dao: ClinicDao,
+    private val dao: ClinicDao
 ) : ClinicCache {
     override suspend fun clinics(cityId: String): List<ClinicCacheRecord> =
         dao.clinics(cityId).map(ClinicEntity::toRecord)

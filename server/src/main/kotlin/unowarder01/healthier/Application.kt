@@ -33,8 +33,8 @@ fun Application.module() {
                     HttpStatusCode.NotFound,
                     ErrorResponse(
                         code = "city_not_found",
-                        message = "No demo clinics are configured for this city",
-                    ),
+                        message = "No demo clinics are configured for this city"
+                    )
                 )
             } else {
                 call.respond(ClinicsResponse(version = 1, cityId = cityId, clinics = clinics))
@@ -47,7 +47,7 @@ fun Application.module() {
 data class ClinicsResponse(
     val version: Int,
     val cityId: String,
-    val clinics: List<ClinicResponse>,
+    val clinics: List<ClinicResponse>
 )
 
 @Serializable
@@ -59,13 +59,13 @@ data class ClinicResponse(
     val address: String,
     val latitude: Double,
     val longitude: Double,
-    val imageUrl: String? = null,
+    val imageUrl: String? = null
 )
 
 @Serializable
 data class ErrorResponse(
     val code: String,
-    val message: String,
+    val message: String
 )
 
 private val demoClinics = listOf("tbilisi", "batumi", "kutaisi", "rustavi").associateWith { cityId ->
@@ -77,7 +77,7 @@ private val demoClinics = listOf("tbilisi", "batumi", "kutaisi", "rustavi").asso
             specialization = "Multidisciplinary clinic",
             address = "Demo address, $cityId",
             latitude = if (cityId == "batumi") 41.6461 else 41.7151,
-            longitude = if (cityId == "batumi") 41.6405 else 44.8271,
+            longitude = if (cityId == "batumi") 41.6405 else 44.8271
         ),
         ClinicResponse(
             id = "$cityId-family",
@@ -86,7 +86,7 @@ private val demoClinics = listOf("tbilisi", "batumi", "kutaisi", "rustavi").asso
             specialization = "Family medicine",
             address = "Demo avenue, $cityId",
             latitude = if (cityId == "batumi") 41.6500 else 41.7220,
-            longitude = if (cityId == "batumi") 41.6420 else 44.7900,
-        ),
+            longitude = if (cityId == "batumi") 41.6420 else 44.7900
+        )
     )
 }

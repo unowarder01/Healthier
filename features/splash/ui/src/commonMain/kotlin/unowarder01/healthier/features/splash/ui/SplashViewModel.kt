@@ -1,39 +1,33 @@
 package unowarder01.healthier.features.splash.ui
 
 import kotlinx.coroutines.delay
-import org.koin.dsl.module
-import unowarder01.healthier.core.mvi.healthierStore
+import pro.respawn.flowmvi.api.PipelineContext
 import unowarder01.healthier.core.mvi.currentState
-import unowarder01.healthier.core.presentation.StoreViewModel
-import unowarder01.healthier.features.splash.domain.SelectLanguageUseCase
+import unowarder01.healthier.core.presentation.viewmodel.BaseViewModel
+import unowarder01.healthier.features.splash.domain.usecase.SelectLanguageUseCase
+import unowarder01.healthier.features.splash.ui.SplashContract.Action
+import unowarder01.healthier.features.splash.ui.SplashContract.Action.NavigateToAuth
+import unowarder01.healthier.features.splash.ui.SplashContract.Intent
+import unowarder01.healthier.features.splash.ui.SplashContract.Intent.SelectLanguage
+import unowarder01.healthier.features.splash.ui.SplashContract.State
 
-class SplashStoreFactory(
-    private val selectLanguage: SelectLanguageUseCase,
+private typealias Context = PipelineContext<State, Intent, Action>
+
+class SplashViewModel(
+    private val selectLanguage: SelectLanguageUseCase
+) : BaseViewModel<State, Intent, Action>(
+    initialState = State(),
+    storeKey = "splash.language"
 ) {
-    fun create() = healthierStore<SplashContract.State, SplashContract.Intent, SplashContract.Action>(
-        name = "splash.language",
-        initial = SplashContract.State(),
-    ) { intent ->
+    override suspend fun Context.handleIntent(intent: Intent) {
         when (intent) {
-            SplashContract.Intent.RevealLanguages ->
-                updateState { copy(showLanguages = true) }
-
-            is SplashContract.Intent.SelectLanguage -> {
-                if (currentState().exiting) return@healthierStore
+            is SelectLanguage -> {
+                if (currentState().exiting) return
                 selectLanguage(intent.language)
                 updateState { copy(selected = intent.language, exiting = true) }
                 delay(220)
-                action(SplashContract.Action.NavigateToAuth)
+                action(NavigateToAuth)
             }
         }
     }
-}
-
-class SplashViewModel(storeFactory: SplashStoreFactory) :
-    StoreViewModel<SplashContract.State, SplashContract.Intent, SplashContract.Action>(
-        storeFactory.create()
-    )
-
-val splashUiModule = module {
-    factory { SplashStoreFactory(get()) }
 }

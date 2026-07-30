@@ -17,9 +17,9 @@ fun MainViewController(): platform.UIKit.UIViewController {
         AppRuntimeConfig(
             isDebug = Platform.isDebugBinary,
             apiBaseUrl = NSBundle.mainBundle
-                .objectForInfoDictionaryKey("HEALTHIER_API_BASE_URL") as? String ?: "",
+                .objectForInfoDictionaryKey("HEALTHIER_API_BASE_URL") as? String ?: ""
         ),
-        createIosClinicCache(),
+        createIosClinicCache()
     )
     return ComposeUIViewController { App(root) }
 }

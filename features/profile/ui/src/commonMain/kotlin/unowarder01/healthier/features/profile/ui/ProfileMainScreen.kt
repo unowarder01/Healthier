@@ -13,129 +13,74 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import pro.respawn.flowmvi.compose.dsl.subscribe
 import unowarder01.healthier.core.common.AppLanguage
-import unowarder01.healthier.core.common.AppTheme
 import unowarder01.healthier.core.designsystem.HealthierTokens
 import unowarder01.healthier.core.designsystem.TextKey
 import unowarder01.healthier.core.designsystem.appString
+import unowarder01.healthier.features.profile.ui.ProfileContract.Listener
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
-fun ProfileMainScreen(component: ProfileComponent) = with(component.store) {
-    val state by subscribe()
-    val locationDescription = appString(state.language, TextKey.ChangeLocation)
-    val languageDescription = appString(state.language, TextKey.ChangeLanguage)
-    val editDescription = appString(state.language, TextKey.EditProfile)
+fun ProfileMainScreen(
+    state: ProfileContract.State,
+    listener: Listener
+) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize().testTag("profile_screen"),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag("profile_screen"),
+        verticalArrangement = Arrangement.spacedBy(HealthierTokens.sectionSpacing)
     ) {
         item {
-            Row(
-                Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    appString(state.language, TextKey.Profile),
-                    style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier.weight(1f),
-                )
-                IconButton(
-                    onClick = component.navigator::changeLocation,
-                    modifier = Modifier
-                        .testTag("profile_change_location")
-                        .semantics {
-                            contentDescription = locationDescription
-                        },
-                ) { Text("⌖") }
-                IconButton(
-                    onClick = { intent(ProfileContract.Intent.ShowLanguageSelector) },
-                    modifier = Modifier
-                        .testTag("profile_change_language")
-                        .semantics {
-                            contentDescription = languageDescription
-                        },
-                ) { Text("文") }
-            }
+            ProfileHeader(
+                language = state.language,
+                onLocationChange = listener::onLocationChangeRequested,
+                onLanguageChange = listener::onLanguageSelectorRequested
+            )
         }
         item {
-            Card(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).testTag("account_card"),
-                shape = RoundedCornerShape(HealthierTokens.radius),
-                elevation = CardDefaults.cardElevation(HealthierTokens.floatingElevation),
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth().padding(20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    if (state.profile.avatarReference == null) {
-                        Box(
-                            Modifier.size(108.dp).background(
-                                MaterialTheme.colorScheme.primaryContainer,
-                                CircleShape,
-                            ),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(state.profile.name.take(1).uppercase(), style = MaterialTheme.typography.headlineLarge)
-                        }
-                    } else {
-                        AsyncImage(
-                            model = state.profile.avatarReference,
-                            contentDescription = state.profile.name,
-                            modifier = Modifier.size(108.dp).clip(CircleShape),
-                        )
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(state.profile.name, style = MaterialTheme.typography.titleLarge)
-                        IconButton(
-                            onClick = { intent(ProfileContract.Intent.StartEdit) },
-                            modifier = Modifier
-                                .testTag("edit_profile")
-                                .semantics {
-                                    contentDescription = editDescription
-                                },
-                        ) { Text("✎") }
-                    }
-                }
-            }
+            ProfileSummary(
+                state = state,
+                onEdit = listener::onEditingStarted
+            )
         }
         item {
             ProfileSection(
                 title = appString(state.language, TextKey.Documents),
                 tag = "documents_section",
                 rows = listOf(
-                    "▣" to appString(state.language, TextKey.Identity),
-                    "▣" to appString(state.language, TextKey.Consents),
-                    "▣" to appString(state.language, TextKey.Scans),
+                    ProfileRow(Icons.Default.Description, appString(state.language, TextKey.Identity)),
+                    ProfileRow(Icons.Default.Description, appString(state.language, TextKey.Consents)),
+                    ProfileRow(Icons.Default.Description, appString(state.language, TextKey.Scans))
                 ),
-                onClick = {
-                    intent(ProfileContract.Intent.ShowMessage(ProfileContract.Message.ComingSoon))
-                },
+                onClick = { listener.onComingSoonActionSelected() }
             )
         }
         item {
@@ -143,17 +88,17 @@ fun ProfileMainScreen(component: ProfileComponent) = with(component.store) {
                 title = appString(state.language, TextKey.Settings),
                 tag = "settings_section",
                 rows = listOf(
-                    "" to appString(state.language, TextKey.ColorTheme),
-                    "" to appString(state.language, TextKey.AppLanguage),
-                    "" to appString(state.language, TextKey.Notifications),
+                    ProfileRow(Icons.Default.Palette, appString(state.language, TextKey.ColorTheme)),
+                    ProfileRow(Icons.Default.Language, appString(state.language, TextKey.AppLanguage)),
+                    ProfileRow(Icons.Default.Notifications, appString(state.language, TextKey.Notifications))
                 ),
                 onClick = { index ->
                     when (index) {
-                        0 -> intent(ProfileContract.Intent.ShowThemeSelector)
-                        1 -> intent(ProfileContract.Intent.ShowLanguageSelector)
-                        else -> intent(ProfileContract.Intent.ShowMessage(ProfileContract.Message.NotConfigured))
+                        0 -> listener.onThemeSelectorRequested()
+                        1 -> listener.onLanguageSelectorRequested()
+                        else -> listener.onUnavailableActionSelected()
                     }
-                },
+                }
             )
         }
         item {
@@ -161,97 +106,152 @@ fun ProfileMainScreen(component: ProfileComponent) = with(component.store) {
                 title = appString(state.language, TextKey.Social),
                 tag = "social_section",
                 rows = listOf(
-                    "◉" to "Telegram",
-                    "◉" to "WhatsApp",
-                    "◉" to "Instagram",
-                    "◉" to "Facebook",
+                    ProfileRow(Icons.Default.Language, "Telegram"),
+                    ProfileRow(Icons.Default.Language, "WhatsApp"),
+                    ProfileRow(Icons.Default.Language, "Instagram"),
+                    ProfileRow(Icons.Default.Language, "Facebook")
                 ),
-                onClick = {
-                    intent(ProfileContract.Intent.ShowMessage(ProfileContract.Message.NotConfigured))
-                },
+                onClick = { listener.onUnavailableActionSelected() }
             )
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(28.dp))
         }
     }
 
-    if (state.editing) {
-        ModalBottomSheet(
-            onDismissRequest = { intent(ProfileContract.Intent.DismissEdit) },
-            modifier = Modifier.testTag("profile_edit_sheet"),
+}
+
+@Composable
+private fun ProfileHeader(
+    language: AppLanguage,
+    onLocationChange: () -> Unit,
+    onLanguageChange: () -> Unit
+) {
+    val changeLocationDescription = appString(language, TextKey.ChangeLocation)
+    val changeLanguageDescription = appString(language, TextKey.ChangeLanguage)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = HealthierTokens.pageHorizontalPadding,
+                top = 22.dp,
+                end = 8.dp
+            ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = appString(language, TextKey.Profile),
+            style = MaterialTheme.typography.headlineLarge,
+            modifier = Modifier.weight(1f)
+        )
+        IconButton(
+            onClick = onLocationChange,
+            modifier = Modifier
+                .testTag("profile_change_location")
+                .semantics {
+                    contentDescription = changeLocationDescription
+                }
         ) {
+            Icon(Icons.Default.LocationOn, contentDescription = null)
+        }
+        IconButton(
+            onClick = onLanguageChange,
+            modifier = Modifier
+                .testTag("profile_change_language")
+                .semantics {
+                    contentDescription = changeLanguageDescription
+                }
+        ) {
+            Icon(Icons.Default.Language, contentDescription = null)
+        }
+    }
+}
+
+@Composable
+private fun ProfileSummary(
+    state: ProfileContract.State,
+    onEdit: () -> Unit
+) {
+    val editProfileDescription = appString(state.language, TextKey.EditProfile)
+
+    Card(
+        shape = MaterialTheme.shapes.large,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = HealthierTokens.pageHorizontalPadding)
+            .testTag("account_card")
+    ) {
+        Row(
+            modifier = Modifier.padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ProfileAvatar(
+                name = state.profile.name,
+                avatarReference = state.profile.avatarReference
+            )
             Column(
-                Modifier.fillMaxWidth().padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 16.dp)
             ) {
-                Text(appString(state.language, TextKey.EditProfile), style = MaterialTheme.typography.titleLarge)
-                OutlinedTextField(
-                    value = state.draftName,
-                    onValueChange = { intent(ProfileContract.Intent.NameChanged(it)) },
-                    label = { Text(appString(state.language, TextKey.Name)) },
-                    modifier = Modifier.fillMaxWidth().testTag("profile_name"),
+                Text(
+                    text = state.profile.name,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
                 )
-                TextButton(
-                    onClick = { intent(ProfileContract.Intent.PickAvatar) },
-                    modifier = Modifier.testTag("profile_pick_avatar"),
-                ) { Text(appString(state.language, TextKey.Avatar)) }
-                Button(
-                    onClick = { intent(ProfileContract.Intent.SaveProfile) },
-                    modifier = Modifier.fillMaxWidth().testTag("profile_save"),
-                ) { Text(appString(state.language, TextKey.Save)) }
+                Text(
+                    text = appString(state.language, TextKey.Profile),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
+            IconButton(
+                onClick = onEdit,
+                modifier = Modifier
+                .testTag("edit_profile")
+                .semantics {
+                        contentDescription = editProfileDescription
+                    }
+            ) {
+                Icon(Icons.Default.Edit, contentDescription = null)
             }
         }
     }
+}
 
-    if (state.showLanguageSelector) {
-        ChoiceDialog(
-            title = appString(state.language, TextKey.AppLanguage),
-            values = listOf(
-                appString(state.language, TextKey.LanguageGeorgian),
-                appString(state.language, TextKey.LanguageEnglish),
-                appString(state.language, TextKey.LanguageRussian),
-            ),
-            onDismiss = { intent(ProfileContract.Intent.DismissOverlay) },
-            onSelect = { index ->
-                intent(ProfileContract.Intent.SelectLanguage(AppLanguage.entries[index]))
-            },
-        )
-    }
-
-    if (state.showThemeSelector) {
-        ChoiceDialog(
-            title = appString(state.language, TextKey.ColorTheme),
-            values = listOf(
-                appString(state.language, TextKey.ThemeSystem),
-                appString(state.language, TextKey.ThemeLight),
-                appString(state.language, TextKey.ThemeDark),
-            ),
-            onDismiss = { intent(ProfileContract.Intent.DismissOverlay) },
-            onSelect = { index ->
-                intent(ProfileContract.Intent.SelectTheme(AppTheme.entries[index]))
-            },
-        )
-    }
-
-    state.message?.let { message ->
-        AlertDialog(
-            onDismissRequest = { intent(ProfileContract.Intent.DismissOverlay) },
-            confirmButton = {
-                TextButton(onClick = { intent(ProfileContract.Intent.DismissOverlay) }) {
-                    Text(appString(state.language, TextKey.Close))
-                }
-            },
-            text = {
-                Text(
-                    appString(
-                        state.language,
-                        if (message == ProfileContract.Message.ComingSoon) {
-                            TextKey.ComingSoon
-                        } else {
-                            TextKey.NotConfigured
-                        }
-                    )
-                )
-            },
+@Composable
+private fun ProfileAvatar(
+    name: String,
+    avatarReference: String?
+) {
+    if (avatarReference == null) {
+        Box(
+            modifier = Modifier
+                .size(72.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.surface,
+                    shape = MaterialTheme.shapes.medium
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = name.take(1).uppercase(),
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+    } else {
+        AsyncImage(
+            model = avatarReference,
+            contentDescription = name,
+            placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
+            error = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
+            modifier = Modifier
+                .size(72.dp)
+                .clip(MaterialTheme.shapes.medium)
         )
     }
 }
@@ -260,52 +260,64 @@ fun ProfileMainScreen(component: ProfileComponent) = with(component.store) {
 private fun ProfileSection(
     title: String,
     tag: String,
-    rows: List<Pair<String, String>>,
-    onClick: (Int) -> Unit,
+    rows: List<ProfileRow>,
+    onClick: (Int) -> Unit
 ) {
-    Column(Modifier.padding(horizontal = 16.dp).testTag(tag)) {
-        Text(title, style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(bottom = 8.dp))
+    Column(
+        modifier = Modifier
+            .padding(horizontal = HealthierTokens.pageHorizontalPadding)
+            .testTag(tag)
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(bottom = 12.dp)
+        )
         Card(
-            shape = RoundedCornerShape(HealthierTokens.radius),
-            elevation = CardDefaults.cardElevation(2.dp),
+            shape = MaterialTheme.shapes.medium,
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
         ) {
             rows.forEachIndexed { index, row ->
+                if (index > 0) {
+                    HorizontalDivider(
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        modifier = Modifier.padding(start = 56.dp)
+                    )
+                }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { onClick(index) }
                         .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if (row.first.isNotBlank()) Text(row.first)
-                    Text(row.second, modifier = Modifier.weight(1f))
-                    Text("›")
+                    Icon(
+                        imageVector = row.icon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        text = row.label,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 16.dp)
+                    )
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         }
     }
 }
 
-@Composable
-private fun ChoiceDialog(
-    title: String,
-    values: List<String>,
-    onDismiss: () -> Unit,
-    onSelect: (Int) -> Unit,
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {},
-        title = { Text(title) },
-        text = {
-            Column {
-                values.forEachIndexed { index, value ->
-                    TextButton(onClick = { onSelect(index) }, modifier = Modifier.fillMaxWidth()) {
-                        Text(value)
-                    }
-                }
-            }
-        },
-    )
-}
+private data class ProfileRow(
+    val icon: ImageVector,
+    val label: String
+)

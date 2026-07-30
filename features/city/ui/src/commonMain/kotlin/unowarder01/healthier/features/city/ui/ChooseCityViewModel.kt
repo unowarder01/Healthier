@@ -1,55 +1,53 @@
 package unowarder01.healthier.features.city.ui
 
-import org.koin.dsl.module
+import pro.respawn.flowmvi.api.PipelineContext
 import unowarder01.healthier.core.common.AppResult
-import unowarder01.healthier.core.mvi.healthierStore
 import unowarder01.healthier.core.mvi.currentState
-import unowarder01.healthier.core.presentation.StoreViewModel
-import unowarder01.healthier.features.city.domain.SearchCitiesUseCase
-import unowarder01.healthier.features.city.domain.SelectCityUseCase
+import unowarder01.healthier.core.presentation.viewmodel.BaseViewModel
+import unowarder01.healthier.features.city.domain.usecase.SearchCitiesUseCase
+import unowarder01.healthier.features.city.domain.usecase.SelectCityUseCase
+import unowarder01.healthier.features.city.ui.ChooseCityContract.Action
+import unowarder01.healthier.features.city.ui.ChooseCityContract.Action.NavigateHome
+import unowarder01.healthier.features.city.ui.ChooseCityContract.Intent
+import unowarder01.healthier.features.city.ui.ChooseCityContract.Intent.Load
+import unowarder01.healthier.features.city.ui.ChooseCityContract.Intent.QueryChanged
+import unowarder01.healthier.features.city.ui.ChooseCityContract.Intent.SelectCity
+import unowarder01.healthier.features.city.ui.ChooseCityContract.State
 
-class ChooseCityStoreFactory(
+private typealias Context = PipelineContext<State, Intent, Action>
+
+class ChooseCityViewModel(
     private val searchCities: SearchCitiesUseCase,
-    private val selectCity: SelectCityUseCase,
+    private val selectCity: SelectCityUseCase
+) : BaseViewModel<State, Intent, Action>(
+    initialState = State(),
+    storeKey = "city.choose-city"
 ) {
-    fun create() =
-        healthierStore<ChooseCityContract.State, ChooseCityContract.Intent, ChooseCityContract.Action>(
-            name = "city.choose-city",
-            initial = ChooseCityContract.State(),
-        ) { intent ->
-            when (intent) {
-                ChooseCityContract.Intent.Load -> {
-                    val cities = searchCities("")
-                    updateState { copy(cities = cities) }
+    override suspend fun Context.handleIntent(intent: Intent) {
+        when (intent) {
+            Load -> {
+                val cities = searchCities("")
+                updateState { copy(cities = cities) }
+            }
+            is QueryChanged -> {
+                val cities = searchCities(intent.value)
+                updateState {
+                    copy(query = intent.value, cities = cities, errorCityId = null)
                 }
-                is ChooseCityContract.Intent.QueryChanged -> {
-                    val cities = searchCities(intent.value)
-                    updateState {
-                        copy(query = intent.value, cities = cities, errorCityId = null)
+            }
+            is SelectCity -> {
+                if (currentState().loadingCityId != null) return
+                updateState { copy(loadingCityId = intent.cityId, errorCityId = null) }
+                when (val result = selectCity(intent.cityId)) {
+                    is AppResult.Success -> {
+                        updateState { copy(loadingCityId = null) }
+                        action(NavigateHome(result.value))
                     }
-                }
-                is ChooseCityContract.Intent.SelectCity -> {
-                    if (currentState().loadingCityId != null) return@healthierStore
-                    updateState { copy(loadingCityId = intent.cityId, errorCityId = null) }
-                    when (val result = selectCity(intent.cityId)) {
-                        is AppResult.Success -> {
-                            updateState { copy(loadingCityId = null) }
-                            action(ChooseCityContract.Action.NavigateHome(result.value))
-                        }
-                        is AppResult.Failure -> updateState {
-                            copy(loadingCityId = null, errorCityId = intent.cityId)
-                        }
+                    is AppResult.Failure -> updateState {
+                        copy(loadingCityId = null, errorCityId = intent.cityId)
                     }
                 }
             }
         }
-}
-
-class ChooseCityViewModel(factory: ChooseCityStoreFactory) :
-    StoreViewModel<ChooseCityContract.State, ChooseCityContract.Intent, ChooseCityContract.Action>(
-        factory.create()
-    )
-
-val cityUiModule = module {
-    factory { ChooseCityStoreFactory(get(), get()) }
+    }
 }

@@ -17,7 +17,7 @@ interface SettingsRepository {
 }
 
 class SettingsRepositoryImpl(
-    private val settings: Settings,
+    private val settings: Settings
 ) : SettingsRepository {
     private val languageState = MutableStateFlow(AppLanguage.fromCode(settings.getStringOrNull(LANGUAGE)))
     private val themeState = MutableStateFlow(

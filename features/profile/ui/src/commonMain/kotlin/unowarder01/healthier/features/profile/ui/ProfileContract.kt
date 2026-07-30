@@ -13,28 +13,49 @@ object ProfileContract {
     data class State(
         val profile: Profile,
         val language: AppLanguage,
-        val theme: AppTheme,
-        val editing: Boolean = false,
-        val draftName: String = profile.name,
-        val draftAvatar: String? = profile.avatarReference,
-        val showLanguageSelector: Boolean = false,
-        val showThemeSelector: Boolean = false,
-        val message: Message? = null,
+        val theme: AppTheme
     ) : MVIState
 
     sealed interface Intent : MVIIntent {
-        data object StartEdit : Intent
-        data object DismissEdit : Intent
-        data class NameChanged(val value: String) : Intent
-        data object PickAvatar : Intent
-        data object SaveProfile : Intent
-        data object ShowLanguageSelector : Intent
-        data object ShowThemeSelector : Intent
+        data object RequestProfileEditor : Intent
+        data object RequestLanguageSelector : Intent
+        data object RequestThemeSelector : Intent
+        data class SaveProfile(
+            val name: String,
+            val avatarReference: String?
+        ) : Intent
         data class SelectLanguage(val language: AppLanguage) : Intent
         data class SelectTheme(val theme: AppTheme) : Intent
-        data class ShowMessage(val message: Message) : Intent
-        data object DismissOverlay : Intent
+        data class RequestMessage(val message: Message) : Intent
     }
 
-    sealed interface Action : MVIAction
+    sealed interface Action : MVIAction {
+        data class ShowProfileEditor(
+            val profile: Profile,
+            val language: AppLanguage
+        ) : Action
+
+        data class ShowLanguageSelector(
+            val language: AppLanguage
+        ) : Action
+
+        data class ShowThemeSelector(
+            val language: AppLanguage,
+            val theme: AppTheme
+        ) : Action
+
+        data class ShowMessage(
+            val language: AppLanguage,
+            val message: Message
+        ) : Action
+    }
+
+    interface Listener {
+        fun onLocationChangeRequested()
+        fun onLanguageSelectorRequested()
+        fun onThemeSelectorRequested()
+        fun onEditingStarted()
+        fun onUnavailableActionSelected()
+        fun onComingSoonActionSelected()
+    }
 }

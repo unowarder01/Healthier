@@ -19,21 +19,21 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     js {
         browser()
     }
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
     }
-    
+
     android {
        namespace = "unowarder01.healthier.app.shared"
        compileSdk = libs.versions.android.compileSdk.get().toInt()
        minSdk = libs.versions.android.minSdk.get().toInt()
-    
+
        compilerOptions {
            jvmTarget = JvmTarget.JVM_11
        }
@@ -49,7 +49,7 @@ kotlin {
            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
        }
     }
-    
+
     sourceSets {
         applyDefaultHierarchyTemplate()
         val commonMain = getByName("commonMain")
@@ -76,7 +76,6 @@ kotlin {
             implementation(project(":features:splash:composition"))
             implementation(project(":features:auth:composition"))
             implementation(project(":features:city:composition"))
-            implementation(project(":features:home:composition"))
             implementation(project(":features:health:composition"))
             implementation(project(":features:map:composition"))
             implementation(project(":features:profile:composition"))
@@ -84,7 +83,6 @@ kotlin {
             implementation(project(":features:splash:ui"))
             implementation(project(":features:auth:ui"))
             implementation(project(":features:city:ui"))
-            implementation(project(":features:home:ui"))
             implementation(project(":features:health:ui"))
             implementation(project(":features:map:ui"))
             implementation(project(":features:profile:ui"))

@@ -13,7 +13,7 @@ fun createIosClinicCache(): ClinicCache {
             inDomain = NSUserDomainMask,
             appropriateForURL = null,
             create = true,
-            error = null,
+            error = null
         )
         ?.path
         ?: error("Documents directory is unavailable")

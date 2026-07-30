@@ -1,20 +1,47 @@
 package unowarder01.healthier.features.auth.ui
 
+import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
+import pro.respawn.flowmvi.compose.dsl.subscribe
 import unowarder01.healthier.core.platform.SocialProvider
-import unowarder01.healthier.core.presentation.retainedStore
+import unowarder01.healthier.core.presentation.component.BaseFeatureComponent
+import unowarder01.healthier.features.auth.ui.AuthContract.Action
+import unowarder01.healthier.features.auth.ui.AuthContract.Action.NavigateToCity
+import unowarder01.healthier.features.auth.ui.AuthContract.Intent
+import unowarder01.healthier.features.auth.ui.AuthContract.Intent.Authenticate
+import unowarder01.healthier.features.auth.ui.AuthContract.Intent.Reveal
+import unowarder01.healthier.features.auth.ui.AuthContract.Listener
+import unowarder01.healthier.features.auth.ui.AuthContract.State
 
 class AuthComponent(
-    componentContext: ComponentContext,
-    factory: AuthStoreFactory,
-    private val navigator: AuthNavigator,
-) : ComponentContext by componentContext {
-    val store = retainedStore("auth.social", factory::create)
-    val providers: Set<SocialProvider> = factory.availableProviders
+    context: ComponentContext,
+    viewModel: AuthViewModel,
+    private val navigator: AuthNavigator
+) : BaseFeatureComponent<
+    State,
+    Intent,
+    Action,
+    AuthViewModel
+>(
+    context = context,
+    viewModel = viewModel
+), Listener {
+    val providers: Set<SocialProvider> = viewModel.availableProviders
 
-    fun handle(action: AuthContract.Action) {
+    @Composable
+    override fun subscribeState() = subscribe { action -> handle(action) }
+
+    override fun onScreenShown() {
+        intent(Reveal)
+    }
+
+    override fun onProviderSelected(provider: SocialProvider) {
+        intent(Authenticate(provider))
+    }
+
+    fun handle(action: Action) {
         when (action) {
-            AuthContract.Action.NavigateToCity -> navigator.openCity()
+            NavigateToCity -> navigator.openCity()
         }
     }
 }

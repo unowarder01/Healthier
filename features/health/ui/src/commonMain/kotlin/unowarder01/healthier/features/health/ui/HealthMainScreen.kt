@@ -1,10 +1,8 @@
 package unowarder01.healthier.features.health.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,187 +14,347 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import pro.respawn.flowmvi.compose.dsl.subscribe
 import unowarder01.healthier.core.common.AppLanguage
+import unowarder01.healthier.core.designsystem.AppLogo
 import unowarder01.healthier.core.designsystem.HealthierTokens
 import unowarder01.healthier.core.designsystem.TextKey
 import unowarder01.healthier.core.designsystem.appString
+import unowarder01.healthier.features.city.domain.Clinic
+import unowarder01.healthier.features.health.domain.Doctor
+import unowarder01.healthier.features.health.domain.Story
+import unowarder01.healthier.features.health.ui.HealthContract.Listener
 
 @Composable
 fun HealthMainScreen(
-    component: HealthComponent,
-    language: AppLanguage,
-) = with(component.store) {
-    val state by subscribe()
+    state: HealthContract.State,
+    listener: Listener,
+    language: AppLanguage
+) {
+    LaunchedEffect(Unit) { listener.onScreenShown() }
+
+    val isEmptySearch = state.query.trim().isNotEmpty() &&
+        state.filtered.stories.isEmpty() &&
+        state.filtered.clinics.isEmpty() &&
+        state.filtered.doctors.isEmpty()
+
     LazyColumn(
-        modifier = Modifier.fillMaxSize().testTag("health_screen"),
-        contentPadding = PaddingValues(bottom = 24.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag("health_screen"),
+        contentPadding = PaddingValues(bottom = 28.dp)
     ) {
         item {
-            HealthToolbar(
-                title = appString(language, TextKey.Health),
-                locationDescription = appString(language, TextKey.ChangeLocation),
-                languageDescription = appString(language, TextKey.ChangeLanguage),
-                onLocation = component.navigator::changeLocation,
-                onLanguage = component.navigator::changeLanguage,
+            HealthHeader(
+                language = language,
+                onLocationChange = listener::onLocationChangeRequested,
+                onLanguageChange = listener::onLanguageChangeRequested
             )
             OutlinedTextField(
                 value = state.query,
-                onValueChange = { intent(HealthContract.Intent.QueryChanged(it)) },
+                onValueChange = listener::onQueryChanged,
                 placeholder = { Text(appString(language, TextKey.HealthSearch)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = null
+                    )
+                },
                 singleLine = true,
-                shape = RoundedCornerShape(HealthierTokens.radius),
+                shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .testTag("health_search"),
+                    .padding(horizontal = HealthierTokens.pageHorizontalPadding)
+                    .testTag("health_search")
             )
         }
-        item {
-            SectionTitle(appString(language, TextKey.Stories))
-            LazyRow(Modifier.fillMaxWidth().testTag("stories_list")) {
-                item { Spacer(Modifier.width(16.dp)) }
-                items(state.filtered.stories, key = { it.id }) { story ->
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.width(84.dp),
-                    ) {
-                        Box(
-                            Modifier
-                                .size(64.dp)
-                                .border(2.dp, HealthierTokens.accent, CircleShape)
-                                .background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
-                            contentAlignment = Alignment.Center,
-                        ) { Text("H") }
-                        Text(story.title, fontSize = 12.sp, maxLines = 1)
-                    }
-                }
-                item { Spacer(Modifier.width(16.dp)) }
-            }
-        }
-        item {
-            SectionTitle(appString(language, TextKey.TopClinics))
-            BoxWithConstraints(Modifier.fillMaxWidth()) {
-                val cardWidth = (maxWidth - 32.dp - 12.dp) / 1.25f
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth().testTag("clinics_list"),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+        if (isEmptySearch) {
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(240.dp)
+                        .testTag("health_empty"),
+                    contentAlignment = Alignment.Center
                 ) {
-                    item { Spacer(Modifier.width(4.dp)) }
-                    items(state.filtered.clinics, key = { it.id }) { clinic ->
-                        Card(
-                            modifier = Modifier.width(cardWidth),
-                            shape = RoundedCornerShape(HealthierTokens.radius),
-                            elevation = CardDefaults.cardElevation(2.dp),
-                        ) {
-                            AsyncImage(
-                                model = clinic.imageUrl,
-                                contentDescription = clinic.name,
-                                modifier = Modifier.fillMaxWidth().aspectRatio(1.65f)
-                                    .background(MaterialTheme.colorScheme.primaryContainer),
-                            )
-                            Text(
-                                clinic.name,
-                                fontSize = 17.sp,
-                                fontWeight = FontWeight.Medium,
-                                modifier = Modifier.padding(12.dp),
-                            )
-                        }
-                    }
-                    item { Spacer(Modifier.width(4.dp)) }
+                    Text(
+                        text = appString(language, TextKey.NoResults),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
-        }
-        item {
-            SectionTitle(appString(language, TextKey.TopDoctors))
-            BoxWithConstraints(Modifier.fillMaxWidth()) {
-                val cardWidth = (maxWidth - 32.dp - 24.dp) / 2.25f
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth().testTag("doctors_list"),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    item { Spacer(Modifier.width(4.dp)) }
-                    items(state.filtered.doctors, key = { it.id }) { doctor ->
-                        Card(
-                            modifier = Modifier.width(cardWidth),
-                            shape = RoundedCornerShape(HealthierTokens.radius),
-                        ) {
-                            Box(
-                                Modifier.fillMaxWidth().aspectRatio(1f)
-                                    .background(MaterialTheme.colorScheme.secondaryContainer),
-                                contentAlignment = Alignment.Center,
-                            ) { Text(doctor.name.take(1).uppercase()) }
-                            Text(
-                                doctor.name,
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Normal,
-                                modifier = Modifier.padding(10.dp),
-                            )
-                        }
-                    }
-                    item { Spacer(Modifier.width(4.dp)) }
-                }
+        } else {
+            item { SectionHeader(appString(language, TextKey.Stories)) }
+            item {
+                StoriesRow(
+                    stories = state.filtered.stories,
+                    modifier = Modifier.testTag("stories_list")
+                )
+            }
+            item { SectionHeader(appString(language, TextKey.TopClinics)) }
+            item {
+                ClinicsRow(
+                    clinics = state.filtered.clinics,
+                    modifier = Modifier.testTag("clinics_list")
+                )
+            }
+            item { SectionHeader(appString(language, TextKey.TopDoctors)) }
+            item {
+                DoctorsRow(
+                    doctors = state.filtered.doctors,
+                    modifier = Modifier.testTag("doctors_list")
+                )
             }
         }
     }
 }
 
 @Composable
-private fun HealthToolbar(
-    title: String,
-    locationDescription: String,
-    languageDescription: String,
-    onLocation: () -> Unit,
-    onLanguage: () -> Unit,
+private fun HealthHeader(
+    language: AppLanguage,
+    onLocationChange: () -> Unit,
+    onLanguageChange: () -> Unit
 ) {
+    val changeLocationDescription = appString(language, TextKey.ChangeLocation)
+    val changeLanguageDescription = appString(language, TextKey.ChangeLanguage)
+
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = HealthierTokens.pageHorizontalPadding,
+                top = 22.dp,
+                end = 8.dp,
+                bottom = 18.dp
+            ),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(title, style = MaterialTheme.typography.headlineLarge, modifier = Modifier.weight(1f))
+        AppLogo(size = 44.dp)
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 12.dp)
+        ) {
+            Text(
+                text = "Healthier",
+                style = MaterialTheme.typography.titleLarge
+            )
+            Text(
+                text = appString(language, TextKey.Health),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
         IconButton(
-            onClick = onLocation,
+            onClick = onLocationChange,
             modifier = Modifier
                 .testTag("change_location")
-                .semantics { contentDescription = locationDescription },
-        ) { Text("⌖") }
+                .semantics {
+                    contentDescription = changeLocationDescription
+                }
+        ) {
+            Icon(
+                imageVector = Icons.Default.LocationOn,
+                contentDescription = null
+            )
+        }
         IconButton(
-            onClick = onLanguage,
+            onClick = onLanguageChange,
             modifier = Modifier
                 .testTag("change_language")
-                .semantics { contentDescription = languageDescription },
-        ) { Text("文") }
+                .semantics {
+                    contentDescription = changeLanguageDescription
+                }
+        ) {
+            Icon(
+                imageVector = Icons.Default.Language,
+                contentDescription = null
+            )
+        }
     }
 }
 
 @Composable
-private fun SectionTitle(text: String) {
+private fun SectionHeader(text: String) {
     Text(
-        text,
-        style = MaterialTheme.typography.titleMedium,
-        modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp),
+        text = text,
+        style = MaterialTheme.typography.titleLarge,
+        modifier = Modifier.padding(
+            start = HealthierTokens.pageHorizontalPadding,
+            top = HealthierTokens.sectionSpacing,
+            bottom = 12.dp
+        )
     )
+}
+
+@Composable
+private fun StoriesRow(
+    stories: List<Story>,
+    modifier: Modifier = Modifier
+) {
+    LazyRow(
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = HealthierTokens.pageHorizontalPadding),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(stories, key = Story::id) { story ->
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.width(72.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(62.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = story.title.take(1).uppercase(),
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = story.title,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.labelLarge
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ClinicsRow(
+    clinics: List<Clinic>,
+    modifier: Modifier = Modifier
+) {
+    LazyRow(
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = HealthierTokens.pageHorizontalPadding),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(clinics, key = Clinic::id) { clinic ->
+            Card(
+                shape = MaterialTheme.shapes.medium,
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                modifier = Modifier.width(248.dp)
+            ) {
+                AsyncImage(
+                    model = clinic.imageUrl,
+                    contentDescription = clinic.name,
+                    placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
+                    error = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1.7f)
+                        .background(MaterialTheme.colorScheme.primaryContainer)
+                )
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Text(
+                        text = clinic.name,
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        text = clinic.specialization,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DoctorsRow(
+    doctors: List<Doctor>,
+    modifier: Modifier = Modifier
+) {
+    LazyRow(
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = HealthierTokens.pageHorizontalPadding),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(doctors, key = Doctor::id) { doctor ->
+            Card(
+                shape = MaterialTheme.shapes.medium,
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
+                ),
+                modifier = Modifier.width(164.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1.15f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = doctor.name.take(1).uppercase(),
+                        style = MaterialTheme.typography.displaySmall,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Text(
+                        text = doctor.name,
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        text = doctor.specialty,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
+            }
+        }
+    }
 }

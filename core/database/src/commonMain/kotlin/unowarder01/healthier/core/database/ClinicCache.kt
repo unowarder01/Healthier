@@ -8,7 +8,7 @@ data class ClinicCacheRecord(
     val address: String,
     val latitude: Double,
     val longitude: Double,
-    val imageUrl: String?,
+    val imageUrl: String?
 )
 
 interface ClinicCache {

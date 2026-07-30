@@ -6,83 +6,89 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import unowarder01.healthier.core.common.AppError
 import unowarder01.healthier.core.common.AppLanguage
-import unowarder01.healthier.core.common.AppResult
 import unowarder01.healthier.core.common.AppTheme
-import unowarder01.healthier.core.platform.PhotoPicker
-import unowarder01.healthier.core.preferences.SettingsRepository
 import unowarder01.healthier.features.profile.domain.Profile
 import unowarder01.healthier.features.profile.domain.ProfileRepository
-import unowarder01.healthier.features.profile.domain.UpdateAppLanguageUseCase
-import unowarder01.healthier.features.profile.domain.UpdateAppThemeUseCase
-import unowarder01.healthier.features.profile.domain.UpdateProfileUseCase
+import unowarder01.healthier.features.profile.domain.usecase.UpdateAppLanguageUseCase
+import unowarder01.healthier.features.profile.domain.usecase.UpdateAppThemeUseCase
+import unowarder01.healthier.features.profile.domain.usecase.UpdateProfileParams
+import unowarder01.healthier.features.profile.domain.usecase.UpdateProfileUseCase
 
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 class ProfileStoreTest {
     @Test
-    fun editSaveSelectorsAndPickerErrorAreStateDriven() = runTest {
+    fun updatesStateAndRoutesOverlaysThroughActions() = runTest {
         val repository = FakeProfileRepository()
-        val settings = FakeProfileSettings()
-        val factory = ProfileStoreFactory(
-            repository,
-            UpdateProfileUseCase(repository),
-            UpdateAppLanguageUseCase(settings),
-            UpdateAppThemeUseCase(settings),
-            object : PhotoPicker {
-                override suspend fun pickAvatar(): AppResult<String> =
-                    AppResult.Failure(AppError.NotConfigured)
+        var selectedLanguage = AppLanguage.English
+        var selectedTheme = AppTheme.System
+        val viewModel = ProfileViewModel(
+            repository = repository,
+            updateProfile = object : UpdateProfileUseCase {
+                override suspend fun invoke(params: UpdateProfileParams) {
+                    repository.update(params.name.trim(), params.avatarReference)
+                }
             },
+            updateLanguage = object : UpdateAppLanguageUseCase {
+                override suspend fun invoke(params: AppLanguage) {
+                    selectedLanguage = params
+                }
+            },
+            updateTheme = object : UpdateAppThemeUseCase {
+                override suspend fun invoke(params: AppTheme) {
+                    selectedTheme = params
+                }
+            },
+            language = AppLanguage.English,
+            theme = AppTheme.System
         )
-        val store = factory.create(AppLanguage.English, AppTheme.System)
-        var latest = ProfileContract.State(repository.profile.value, AppLanguage.English, AppTheme.System)
+        val store = viewModel.store
+        var latest = ProfileContract.State(
+            repository.profile.value,
+            AppLanguage.English,
+            AppTheme.System
+        )
+        val actions = mutableListOf<ProfileContract.Action>()
         store.start(backgroundScope)
-        with(store) { backgroundScope.subscribe { states.collect { latest = it } } }
+        with(store) {
+            backgroundScope.subscribe { states.collect { latest = it } }
+            backgroundScope.subscribe { this.actions.collect { actions += it } }
+        }
         runCurrent()
 
-        store.intent(ProfileContract.Intent.StartEdit)
+        store.intent(ProfileContract.Intent.RequestProfileEditor)
         runCurrent()
-        store.intent(ProfileContract.Intent.NameChanged("  Ana  "))
-        runCurrent()
-        store.intent(ProfileContract.Intent.SaveProfile)
-        runCurrent()
-        assertFalse(latest.editing)
-        assertEquals("Ana", latest.profile.name)
-
-        store.intent(ProfileContract.Intent.ShowLanguageSelector)
+        store.intent(ProfileContract.Intent.SaveProfile("  Ana  ", null))
         runCurrent()
         store.intent(ProfileContract.Intent.SelectLanguage(AppLanguage.Georgian))
         runCurrent()
-        store.intent(ProfileContract.Intent.ShowThemeSelector)
-        runCurrent()
         store.intent(ProfileContract.Intent.SelectTheme(AppTheme.Dark))
         runCurrent()
-        store.intent(ProfileContract.Intent.PickAvatar)
+        store.intent(
+            ProfileContract.Intent.RequestMessage(
+                ProfileContract.Message.NotConfigured
+            )
+        )
         runCurrent()
 
+        assertEquals("Ana", latest.profile.name)
         assertEquals(AppLanguage.Georgian, latest.language)
         assertEquals(AppTheme.Dark, latest.theme)
-        assertFalse(latest.showLanguageSelector)
-        assertFalse(latest.showThemeSelector)
-        assertEquals(ProfileContract.Message.NotConfigured, latest.message)
-        assertTrue(settings.language.value == AppLanguage.Georgian && settings.theme.value == AppTheme.Dark)
+        assertEquals(AppLanguage.Georgian, selectedLanguage)
+        assertEquals(AppTheme.Dark, selectedTheme)
+        assertTrue(actions.any { it is ProfileContract.Action.ShowProfileEditor })
+        assertTrue(actions.any { it is ProfileContract.Action.ShowMessage })
     }
 }
 
 private class FakeProfileRepository : ProfileRepository {
     override val profile = MutableStateFlow(Profile("Demo", null))
-    override suspend fun update(name: String, avatarReference: String?) {
+
+    override suspend fun update(
+        name: String,
+        avatarReference: String?
+    ) {
         profile.value = Profile(name, avatarReference)
     }
-}
-
-private class FakeProfileSettings : SettingsRepository {
-    override val language = MutableStateFlow(AppLanguage.English)
-    override val theme = MutableStateFlow(AppTheme.System)
-    override val selectedCityId = MutableStateFlow<String?>(null)
-    override fun setLanguage(value: AppLanguage) { language.value = value }
-    override fun setTheme(value: AppTheme) { theme.value = value }
-    override fun setSelectedCityId(value: String) { selectedCityId.value = value }
 }

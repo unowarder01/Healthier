@@ -14,7 +14,7 @@ fun main() {
     val root = createRootComponent(
         DefaultComponentContext(lifecycle),
         AppRuntimeConfig(isDebug = false),
-        InMemoryClinicCache(),
+        InMemoryClinicCache()
     )
     ComposeViewport {
         App(root)

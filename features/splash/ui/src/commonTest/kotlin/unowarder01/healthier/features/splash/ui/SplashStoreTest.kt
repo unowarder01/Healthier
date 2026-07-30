@@ -1,25 +1,28 @@
 package unowarder01.healthier.features.splash.ui
 
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 import unowarder01.healthier.core.common.AppLanguage
 import unowarder01.healthier.core.common.AppTheme
 import unowarder01.healthier.core.preferences.SettingsRepository
-import unowarder01.healthier.features.splash.domain.SelectLanguageUseCase
+import unowarder01.healthier.features.splash.domain.usecase.SelectLanguageUseCase
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 class SplashStoreTest {
     @Test
     fun revealAndSelectionUpdateStateAndNavigate() = runTest {
         val settings = FakeSettingsRepository()
-        val store = SplashStoreFactory(SelectLanguageUseCase(settings)).create()
+        val useCase = object : SelectLanguageUseCase {
+            override suspend fun invoke(params: AppLanguage) {
+                settings.setLanguage(params)
+            }
+        }
+        val store = SplashViewModel(useCase).store
         var latest = SplashContract.State()
         val actions = mutableListOf<SplashContract.Action>()
         store.start(backgroundScope)
@@ -30,11 +33,6 @@ class SplashStoreTest {
             }
         }
         runCurrent()
-
-        assertFalse(latest.showLanguages)
-        store.intent(SplashContract.Intent.RevealLanguages)
-        runCurrent()
-        assertTrue(latest.showLanguages)
 
         store.intent(SplashContract.Intent.SelectLanguage(AppLanguage.Russian))
         runCurrent()

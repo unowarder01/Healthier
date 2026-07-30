@@ -8,6 +8,7 @@ kotlin {
         api(libs.compose.runtime)
         api(libs.compose.foundation)
         api(libs.compose.material3)
+        api("org.jetbrains.compose.material:material-icons-extended:1.7.3")
         api(libs.compose.ui)
         api(libs.compose.components.resources)
         implementation(libs.coil.compose)

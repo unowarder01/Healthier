@@ -9,7 +9,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.serialization.Serializable
-import org.koin.dsl.module
 import unowarder01.healthier.core.common.AppError
 import unowarder01.healthier.core.common.AppLanguage
 import unowarder01.healthier.core.common.AppResult
@@ -36,7 +35,7 @@ class CityRepositoryImpl : CityRepository {
         city("samtredia", "სამტრედია", "Samtredia", "Самтредиа", 25_318, "самтредиа"),
         city("senaki", "სენაკი", "Senaki", "Сенаки", 21_596, "сенаки"),
         city("zestafoni", "ზესტაფონი", "Zestafoni", "Зестафони", 20_814, "зестафони"),
-        city("marneuli", "მარნეული", "Marneuli", "Марнеули", 20_211, "марнеули"),
+        city("marneuli", "მარნეული", "Marneuli", "Марнеули", 20_211, "марнеули")
     ).sortedByDescending(City::population)
 
     override fun observeCities(): Flow<List<City>> = flowOf(cities)
@@ -57,16 +56,16 @@ private fun city(
     en: String,
     ru: String,
     population: Int,
-    vararg aliases: String,
+    vararg aliases: String
 ) = City(
     id = id,
     names = mapOf(
         AppLanguage.Georgian to ka,
         AppLanguage.English to en,
-        AppLanguage.Russian to ru,
+        AppLanguage.Russian to ru
     ),
     aliases = aliases.toSet() + setOf(ka, en, ru),
-    population = population,
+    population = population
 )
 
 @Serializable
@@ -78,14 +77,14 @@ data class ClinicDto(
     val address: String,
     val latitude: Double,
     val longitude: Double,
-    val imageUrl: String? = null,
+    val imageUrl: String? = null
 )
 
 @Serializable
 data class ClinicsResponseDto(
     val version: Int,
     val cityId: String,
-    val clinics: List<ClinicDto>,
+    val clinics: List<ClinicDto>
 )
 
 interface ClinicRemoteSource {
@@ -94,7 +93,7 @@ interface ClinicRemoteSource {
 
 class KtorClinicRemoteSource(
     private val client: HttpClient,
-    private val environment: NetworkEnvironment,
+    private val environment: NetworkEnvironment
 ) : ClinicRemoteSource {
     override suspend fun clinics(cityId: String): AppResult<List<ClinicDto>> {
         if (environment.baseUrl.isBlank()) {
@@ -129,7 +128,7 @@ class DemoClinicRemoteSource : ClinicRemoteSource {
                     specialization = "Multidisciplinary clinic",
                     address = "Demo address, $cityId",
                     latitude = if (cityId == "batumi") 41.6461 else 41.7151,
-                    longitude = if (cityId == "batumi") 41.6405 else 44.8271,
+                    longitude = if (cityId == "batumi") 41.6405 else 44.8271
                 ),
                 ClinicDto(
                     id = "$cityId-family",
@@ -138,7 +137,7 @@ class DemoClinicRemoteSource : ClinicRemoteSource {
                     specialization = "Family medicine",
                     address = "Demo avenue, $cityId",
                     latitude = if (cityId == "batumi") 41.6500 else 41.7220,
-                    longitude = if (cityId == "batumi") 41.6420 else 44.7900,
+                    longitude = if (cityId == "batumi") 41.6420 else 44.7900
                 ),
                 ClinicDto(
                     id = "$cityId-diagnostics",
@@ -147,8 +146,8 @@ class DemoClinicRemoteSource : ClinicRemoteSource {
                     specialization = "Diagnostics",
                     address = "Demo square, $cityId",
                     latitude = if (cityId == "batumi") 41.6380 else 41.7040,
-                    longitude = if (cityId == "batumi") 41.6210 else 44.8030,
-                ),
+                    longitude = if (cityId == "batumi") 41.6210 else 44.8030
+                )
             )
         )
     }
@@ -156,7 +155,7 @@ class DemoClinicRemoteSource : ClinicRemoteSource {
 
 class ClinicRepositoryImpl(
     private val remote: ClinicRemoteSource,
-    private val cache: ClinicCache,
+    private val cache: ClinicCache
 ) : ClinicRepository {
     override suspend fun getClinics(cityId: String, forceRefresh: Boolean): AppResult<List<Clinic>> {
         if (!forceRefresh) {
@@ -183,17 +182,7 @@ private fun ClinicCacheRecord.toDomain() = Clinic(
 )
 
 class SelectedCityRepositoryImpl(
-    private val settings: SettingsRepository,
+    private val settings: SettingsRepository
 ) : SelectedCityRepository {
     override fun save(cityId: String) = settings.setSelectedCityId(cityId)
-}
-
-val cityDataModule = module {
-    single<CityRepository> { CityRepositoryImpl() }
-    single<ClinicRemoteSource> {
-        if (get<NetworkEnvironment>().isDebug) DemoClinicRemoteSource()
-        else KtorClinicRemoteSource(get(), get())
-    }
-    single<ClinicRepository> { ClinicRepositoryImpl(get(), get()) }
-    single<SelectedCityRepository> { SelectedCityRepositoryImpl(get()) }
 }

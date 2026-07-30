@@ -12,15 +12,17 @@ import unowarder01.healthier.core.common.AppResult
 import unowarder01.healthier.core.platform.AuthToken
 import unowarder01.healthier.core.platform.SocialAuthProvider
 import unowarder01.healthier.core.platform.SocialProvider
-import unowarder01.healthier.features.auth.domain.AuthRepository
-import unowarder01.healthier.features.auth.domain.AuthenticateUseCase
+import unowarder01.healthier.features.auth.domain.usecase.AuthenticateUseCase
 
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 class AuthStoreTest {
     @Test
     fun successClearsLoadingAndNavigates() = runTest {
         val repository = FakeAuthRepository(AppResult.Success(Unit))
-        val store = AuthStoreFactory(AuthenticateUseCase(repository), FakeProvider).create()
+        val store = AuthViewModel(
+            authenticate = repository,
+            provider = FakeProvider
+        ).store
         var latest = AuthContract.State()
         val actions = mutableListOf<AuthContract.Action>()
         store.start(backgroundScope)
@@ -45,7 +47,10 @@ class AuthStoreTest {
     @Test
     fun failureBecomesVisibleError() = runTest {
         val repository = FakeAuthRepository(AppResult.Failure(AppError.NotConfigured))
-        val store = AuthStoreFactory(AuthenticateUseCase(repository), FakeProvider).create()
+        val store = AuthViewModel(
+            authenticate = repository,
+            provider = FakeProvider
+        ).store
         var latest = AuthContract.State()
         store.start(backgroundScope)
         with(store) { backgroundScope.subscribe { states.collect { latest = it } } }
@@ -60,11 +65,11 @@ class AuthStoreTest {
 }
 
 private class FakeAuthRepository(
-    private val result: AppResult<Unit>,
-) : AuthRepository {
+    private val result: AppResult<Unit>
+) : AuthenticateUseCase {
     var requested: SocialProvider? = null
-    override suspend fun authenticate(provider: SocialProvider): AppResult<Unit> {
-        requested = provider
+    override suspend fun invoke(params: SocialProvider): AppResult<Unit> {
+        requested = params
         return result
     }
 }

@@ -9,7 +9,7 @@ object AuthContract {
     data class State(
         val visible: Boolean = false,
         val loadingProvider: SocialProvider? = null,
-        val error: String? = null,
+        val error: String? = null
     ) : MVIState
 
     sealed interface Intent : MVIIntent {
@@ -19,5 +19,10 @@ object AuthContract {
 
     sealed interface Action : MVIAction {
         data object NavigateToCity : Action
+    }
+
+    interface Listener {
+        fun onScreenShown()
+        fun onProviderSelected(provider: SocialProvider)
     }
 }

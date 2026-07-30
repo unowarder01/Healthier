@@ -8,7 +8,7 @@ import unowarder01.healthier.features.city.domain.Clinic
 object MapContract {
     data class State(
         val clinics: List<Clinic>,
-        val selectedClinic: Clinic? = null,
+        val selectedClinic: Clinic? = null
     ) : MVIState
 
     sealed interface Intent : MVIIntent {
@@ -17,4 +17,9 @@ object MapContract {
     }
 
     sealed interface Action : MVIAction
+
+    interface Listener {
+        fun onClinicSelected(clinicId: String)
+        fun onClinicDismissed()
+    }
 }

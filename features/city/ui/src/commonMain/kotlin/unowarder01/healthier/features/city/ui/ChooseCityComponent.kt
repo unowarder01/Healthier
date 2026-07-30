@@ -1,18 +1,49 @@
 package unowarder01.healthier.features.city.ui
 
+import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
-import unowarder01.healthier.core.presentation.retainedStore
+import pro.respawn.flowmvi.compose.dsl.subscribe
+import unowarder01.healthier.core.presentation.component.BaseFeatureComponent
+import unowarder01.healthier.features.city.ui.ChooseCityContract.Action
+import unowarder01.healthier.features.city.ui.ChooseCityContract.Action.NavigateHome
+import unowarder01.healthier.features.city.ui.ChooseCityContract.Intent
+import unowarder01.healthier.features.city.ui.ChooseCityContract.Intent.Load
+import unowarder01.healthier.features.city.ui.ChooseCityContract.Intent.QueryChanged
+import unowarder01.healthier.features.city.ui.ChooseCityContract.Intent.SelectCity
+import unowarder01.healthier.features.city.ui.ChooseCityContract.Listener
+import unowarder01.healthier.features.city.ui.ChooseCityContract.State
 
 class ChooseCityComponent(
-    componentContext: ComponentContext,
-    factory: ChooseCityStoreFactory,
-    private val navigator: ChooseCityNavigator,
-) : ComponentContext by componentContext {
-    val store = retainedStore("city.choose-city", factory::create)
+    context: ComponentContext,
+    viewModel: ChooseCityViewModel,
+    private val navigator: ChooseCityNavigator
+) : BaseFeatureComponent<
+    State,
+    Intent,
+    Action,
+    ChooseCityViewModel
+>(
+    context = context,
+    viewModel = viewModel
+), Listener {
+    @Composable
+    override fun subscribeState() = subscribe { action -> handle(action) }
 
-    fun handle(action: ChooseCityContract.Action) {
+    override fun onScreenShown() {
+        intent(Load)
+    }
+
+    override fun onQueryChanged(query: String) {
+        intent(QueryChanged(query))
+    }
+
+    override fun onCitySelected(cityId: String) {
+        intent(SelectCity(cityId))
+    }
+
+    fun handle(action: Action) {
         when (action) {
-            is ChooseCityContract.Action.NavigateHome -> navigator.openHome(action.clinics)
+            is NavigateHome -> navigator.openHome(action.clinics)
         }
     }
 }

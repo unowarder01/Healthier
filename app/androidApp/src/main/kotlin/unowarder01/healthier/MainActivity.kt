@@ -19,9 +19,9 @@ class MainActivity : ComponentActivity() {
                 context,
                 AppRuntimeConfig(
                     isDebug = BuildConfig.DEBUG,
-                    apiBaseUrl = BuildConfig.API_BASE_URL,
+                    apiBaseUrl = BuildConfig.API_BASE_URL
                 ),
-                createAndroidClinicCache(applicationContext),
+                createAndroidClinicCache(applicationContext)
             )
         }
         setContent { App(root) }

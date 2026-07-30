@@ -14,13 +14,13 @@ import pro.respawn.flowmvi.api.Store
 
 fun <S : MVIState, I : MVIIntent, A : MVIAction> ComponentContext.retainedStore(
     key: String,
-    factory: () -> Store<S, I, A>,
+    factory: () -> Store<S, I, A>
 ): Store<S, I, A> = instanceKeeper.getOrCreate(key) {
     StoreHolder(factory())
 }.store
 
 private class StoreHolder<S : MVIState, I : MVIIntent, A : MVIAction>(
-    val store: Store<S, I, A>,
+    val store: Store<S, I, A>
 ) : InstanceKeeper.Instance {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -33,7 +33,3 @@ private class StoreHolder<S : MVIState, I : MVIIntent, A : MVIAction>(
         scope.cancel()
     }
 }
-
-open class StoreViewModel<S : MVIState, I : MVIIntent, A : MVIAction>(
-    val store: Store<S, I, A>,
-)

@@ -1,7 +1,6 @@
 package unowarder01.healthier.features.auth.data
 
 import kotlinx.coroutines.delay
-import org.koin.dsl.module
 import unowarder01.healthier.core.common.AppError
 import unowarder01.healthier.core.common.AppResult
 import unowarder01.healthier.core.network.NetworkEnvironment
@@ -16,7 +15,7 @@ import unowarder01.healthier.features.auth.domain.AuthRepository
 
 class AuthRepositoryImpl(
     private val provider: SocialAuthProvider,
-    private val secureStorage: SecureStorage,
+    private val secureStorage: SecureStorage
 ) : AuthRepository {
     override suspend fun authenticate(provider: SocialProvider): AppResult<Unit> =
         when (val result = this.provider.authenticate(provider)) {
@@ -29,7 +28,7 @@ class AuthRepositoryImpl(
 }
 
 class DemoSocialAuthProvider(
-    platform: PlatformKind,
+    platform: PlatformKind
 ) : SocialAuthProvider {
     override val availableProviders: Set<SocialProvider> = buildSet {
         if (platform == PlatformKind.IOS) add(SocialProvider.Apple)
@@ -48,35 +47,23 @@ class DemoSocialAuthProvider(
 }
 
 class UnconfiguredSocialAuthProvider(
-    platform: PlatformKind,
+    platform: PlatformKind
 ) : SocialAuthProvider {
     override val availableProviders: Set<SocialProvider> = when (platform) {
         PlatformKind.IOS -> setOf(
             SocialProvider.Apple,
             SocialProvider.Google,
             SocialProvider.Meta,
-            SocialProvider.Telegram,
+            SocialProvider.Telegram
         )
         PlatformKind.Android -> setOf(
             SocialProvider.Google,
             SocialProvider.Meta,
-            SocialProvider.Telegram,
+            SocialProvider.Telegram
         )
         PlatformKind.Web -> emptySet()
     }
 
     override suspend fun authenticate(provider: SocialProvider): AppResult<AuthToken> =
         AppResult.Failure(AppError.NotConfigured)
-}
-
-val authDataModule = module {
-    single<SecureStorage> { MemorySecureStorage() }
-    single<SocialAuthProvider> {
-        if (get<NetworkEnvironment>().isDebug) {
-            DemoSocialAuthProvider(currentPlatformKind)
-        } else {
-            UnconfiguredSocialAuthProvider(currentPlatformKind)
-        }
-    }
-    single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
 }

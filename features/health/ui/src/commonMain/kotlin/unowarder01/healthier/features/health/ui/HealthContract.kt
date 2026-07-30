@@ -9,12 +9,20 @@ object HealthContract {
     data class State(
         val query: String = "",
         val content: HealthContent,
-        val filtered: HealthContent = content,
+        val filtered: HealthContent = content
     ) : MVIState
 
     sealed interface Intent : MVIIntent {
+        data object Load : Intent
         data class QueryChanged(val value: String) : Intent
     }
 
     sealed interface Action : MVIAction
+
+    interface Listener {
+        fun onScreenShown()
+        fun onQueryChanged(query: String)
+        fun onLocationChangeRequested()
+        fun onLanguageChangeRequested()
+    }
 }

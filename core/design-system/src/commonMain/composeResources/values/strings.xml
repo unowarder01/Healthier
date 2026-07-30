@@ -6,6 +6,9 @@
     <string name="auth_ka">ავტორიზაცია</string>
     <string name="auth_en">Authorization</string>
     <string name="auth_ru">Авторизация</string>
+    <string name="continue_with_ka">გაგრძელება</string>
+    <string name="continue_with_en">Continue with</string>
+    <string name="continue_with_ru">Продолжить с</string>
     <string name="your_city_ka">თქვენი ქალაქი</string>
     <string name="your_city_en">Your city</string>
     <string name="your_city_ru">Ваш город</string>
