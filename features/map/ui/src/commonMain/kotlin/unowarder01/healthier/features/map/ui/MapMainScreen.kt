@@ -38,9 +38,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import unowarder01.healthier.core.common.AppLanguage
-import unowarder01.healthier.core.designsystem.HealthierTokens
-import unowarder01.healthier.core.designsystem.TextKey
-import unowarder01.healthier.core.designsystem.appString
+import unowarder01.healthier.core.designsystem.theme.HealthierTokens
+import unowarder01.healthier.core.designsystem.strings.TextKey
+import unowarder01.healthier.core.designsystem.strings.appString
 import unowarder01.healthier.core.platform.MapAvailability
 import unowarder01.healthier.features.city.domain.Clinic
 import unowarder01.healthier.features.map.ui.MapContract.Listener

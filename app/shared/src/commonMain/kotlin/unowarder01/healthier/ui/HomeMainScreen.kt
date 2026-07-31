@@ -20,8 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import unowarder01.healthier.core.common.AppLanguage
-import unowarder01.healthier.core.designsystem.TextKey
-import unowarder01.healthier.core.designsystem.appString
+import unowarder01.healthier.core.designsystem.strings.TextKey
+import unowarder01.healthier.core.designsystem.strings.appString
 
 @Composable
 fun HomeMainScreen(

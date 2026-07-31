@@ -7,11 +7,14 @@ import pro.respawn.flowmvi.api.PipelineContext
 import pro.respawn.flowmvi.api.StateStrategy
 import pro.respawn.flowmvi.api.Store
 import pro.respawn.flowmvi.dsl.store
+import pro.respawn.flowmvi.plugins.init
+import pro.respawn.flowmvi.plugins.reduce
 
 fun <S : MVIState, I : MVIIntent, A : MVIAction> healthierStore(
     name: String,
     initial: S,
-    handle: suspend PipelineContext<S, I, A>.(I) -> Unit
+    handleInit: suspend PipelineContext<S, I, A>.() -> Unit,
+    handleIntents: suspend PipelineContext<S, I, A>.(I) -> Unit
 ): Store<S, I, A> = store(initial) {
     configure {
         this.name = name
@@ -19,11 +22,11 @@ fun <S : MVIState, I : MVIIntent, A : MVIAction> healthierStore(
         stateStrategy = StateStrategy.Atomic(reentrant = true)
         debuggable = false
     }
-    install {
-        onIntent { intent ->
-            handle(intent)
-            null
-        }
+    init {
+        handleInit()
+    }
+    reduce { intent ->
+        handleIntents(intent)
     }
 }
 

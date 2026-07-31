@@ -32,9 +32,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import unowarder01.healthier.core.common.AppLanguage
-import unowarder01.healthier.core.designsystem.HealthierTokens
-import unowarder01.healthier.core.designsystem.TextKey
-import unowarder01.healthier.core.designsystem.appString
+import unowarder01.healthier.core.designsystem.theme.HealthierTokens
+import unowarder01.healthier.core.designsystem.strings.TextKey
+import unowarder01.healthier.core.designsystem.strings.appString
 import unowarder01.healthier.features.city.domain.City
 import unowarder01.healthier.features.city.ui.ChooseCityContract.Listener
 

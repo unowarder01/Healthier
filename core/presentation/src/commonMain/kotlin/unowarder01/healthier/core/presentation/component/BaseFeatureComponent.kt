@@ -18,7 +18,7 @@ abstract class BaseFeatureComponent<S : MVIState, I : MVIIntent, A : MVIAction, 
 ) : ComponentContext by context,
     Component,
     Store<S, I, A> by context.retainedStore(
-        key = viewModel.storeKey,
+        key = viewModel.store.name!!,
         factory = { viewModel.store }
     ) {
     @Composable

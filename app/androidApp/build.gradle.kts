@@ -24,6 +24,7 @@ dependencies {
     implementation(project(":core:database"))
 
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.splash.screen)
     implementation(libs.androidx.concurrent.futures)
     implementation(libs.decompose)
 

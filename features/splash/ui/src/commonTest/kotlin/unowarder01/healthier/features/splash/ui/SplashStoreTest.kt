@@ -34,12 +34,11 @@ class SplashStoreTest {
         }
         runCurrent()
 
-        store.intent(SplashContract.Intent.SelectLanguage(AppLanguage.Russian))
+        store.intent(SplashContract.Intent.OnLanguageClicked(AppLanguage.Russian))
         runCurrent()
         advanceTimeBy(221)
         runCurrent()
-        assertEquals(AppLanguage.Russian, latest.selected)
-        assertTrue(latest.exiting)
+        assertEquals(AppLanguage.Russian, latest.selectedLanguage)
         assertEquals(AppLanguage.Russian, settings.language.value)
         assertTrue(SplashContract.Action.NavigateToAuth in actions)
     }

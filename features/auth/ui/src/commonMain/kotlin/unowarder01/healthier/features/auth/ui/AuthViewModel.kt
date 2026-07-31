@@ -19,8 +19,7 @@ class AuthViewModel(
     private val authenticate: AuthenticateUseCase,
     private val provider: SocialAuthProvider
 ) : BaseViewModel<State, Intent, Action>(
-    initialState = State(),
-    storeKey = "auth.social"
+    initialState = State()
 ) {
     val availableProviders get() = provider.availableProviders
 

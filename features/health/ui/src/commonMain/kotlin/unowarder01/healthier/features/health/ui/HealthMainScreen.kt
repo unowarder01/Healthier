@@ -38,15 +38,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import unowarder01.healthier.core.common.AppLanguage
-import unowarder01.healthier.core.designsystem.AppLogo
-import unowarder01.healthier.core.designsystem.HealthierTokens
-import unowarder01.healthier.core.designsystem.TextKey
-import unowarder01.healthier.core.designsystem.appString
+import unowarder01.healthier.core.designsystem.components.image.AppLogo
+import unowarder01.healthier.core.designsystem.theme.HealthierTokens
+import unowarder01.healthier.core.designsystem.strings.TextKey
+import unowarder01.healthier.core.designsystem.strings.appString
 import unowarder01.healthier.features.city.domain.Clinic
 import unowarder01.healthier.features.health.domain.Doctor
 import unowarder01.healthier.features.health.domain.Story
@@ -157,7 +156,9 @@ private fun HealthHeader(
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AppLogo(size = 44.dp)
+        AppLogo(
+            modifier = Modifier.size(44.dp)
+        )
         Column(
             modifier = Modifier
                 .weight(1f)

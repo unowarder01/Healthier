@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Palette
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -42,9 +41,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import unowarder01.healthier.core.common.AppLanguage
-import unowarder01.healthier.core.designsystem.HealthierTokens
-import unowarder01.healthier.core.designsystem.TextKey
-import unowarder01.healthier.core.designsystem.appString
+import unowarder01.healthier.core.designsystem.theme.HealthierTokens
+import unowarder01.healthier.core.designsystem.strings.TextKey
+import unowarder01.healthier.core.designsystem.strings.appString
 import unowarder01.healthier.features.profile.ui.ProfileContract.Listener
 
 @Composable

@@ -23,8 +23,7 @@ class HealthViewModel(
             doctors = emptyList(),
             stories = emptyList()
         )
-    ),
-    storeKey = "health.overview"
+    )
 ) {
     override suspend fun PipelineContext<State, Intent, Action>.handleIntent(intent: Intent) {
         when (intent) {

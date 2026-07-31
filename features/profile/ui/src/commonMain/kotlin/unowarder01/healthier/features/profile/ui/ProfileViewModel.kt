@@ -34,8 +34,11 @@ class ProfileViewModel(
     language: AppLanguage,
     theme: AppTheme
 ) : BaseViewModel<State, Intent, Action>(
-    initialState = State(repository.profile.value, language, theme),
-    storeKey = "profile.overview"
+    initialState = State(
+        profile = repository.profile.value,
+        language = language,
+        theme = theme
+    ),
 ) {
     override suspend fun Context.handleIntent(intent: Intent) {
         when (intent) {

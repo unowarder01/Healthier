@@ -12,8 +12,7 @@ import unowarder01.healthier.features.map.ui.MapContract.State
 class MapViewModel(
     clinics: List<Clinic>
 ) : BaseViewModel<State, Intent, Action>(
-    initialState = State(clinics),
-    storeKey = "map.clinics"
+    initialState = State(clinics)
 ) {
     override suspend fun PipelineContext<State, Intent, Action>.handleIntent(intent: Intent) {
         when (intent) {

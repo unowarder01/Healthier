@@ -20,8 +20,7 @@ class ChooseCityViewModel(
     private val searchCities: SearchCitiesUseCase,
     private val selectCity: SelectCityUseCase
 ) : BaseViewModel<State, Intent, Action>(
-    initialState = State(),
-    storeKey = "city.choose-city"
+    initialState = State()
 ) {
     override suspend fun Context.handleIntent(intent: Intent) {
         when (intent) {

@@ -1,18 +1,22 @@
 package unowarder01.healthier.features.splash.ui
 
+import androidx.compose.runtime.Immutable
 import pro.respawn.flowmvi.api.MVIAction
 import pro.respawn.flowmvi.api.MVIIntent
 import pro.respawn.flowmvi.api.MVIState
 import unowarder01.healthier.core.common.AppLanguage
 
 object SplashContract {
-    data class State(
-        val selected: AppLanguage? = null,
-        val exiting: Boolean = false
-    ) : MVIState
-
     sealed interface Intent : MVIIntent {
-        data class SelectLanguage(val language: AppLanguage) : Intent
+        data class OnLanguageClicked(val language: AppLanguage) : Intent
+    }
+
+    @Immutable
+    data class State(
+        val languages: List<AppLanguage> = listOf(),
+        val selectedLanguage: AppLanguage? = null
+    ) : MVIState {
+        val showLanguagesContainer get() = languages.isNotEmpty()
     }
 
     sealed interface Action : MVIAction {
@@ -20,6 +24,6 @@ object SplashContract {
     }
 
     interface Listener {
-        fun onLanguageSelected(language: AppLanguage)
+        fun onLanguageClick(language: AppLanguage)
     }
 }

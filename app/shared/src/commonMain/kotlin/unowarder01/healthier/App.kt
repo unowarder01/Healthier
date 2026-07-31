@@ -11,29 +11,46 @@ import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import unowarder01.healthier.core.designsystem.HealthierTheme
+import unowarder01.healthier.core.designsystem.theme.HealthierTheme
 
 @Composable
 fun App(root: RootComponent) {
     val theme by root.settings.theme.collectAsState()
-    val stack by root.navigator.router.subscribeAsState()
-    val dialogSlot by root.dialogs.router.subscribeAsState()
-
     HealthierTheme(
         theme = theme,
         systemDark = isSystemInDarkTheme()
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Children(
-                stack = stack,
-                modifier = Modifier.fillMaxSize(),
-                animation = stackAnimation(slide())
-            ) { child ->
-                root.navigator.getContentByChild(child.instance)
-            }
-            dialogSlot.child?.instance?.let { child ->
-                root.dialogs.getContentByChild(child)
-            }
+        AppContent(root)
+    }
+}
+
+@Composable
+private fun AppContent(root: RootComponent) {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        ScreensContent(root)
+        DialogsContent(root)
+    }
+}
+
+@Composable
+private fun ScreensContent(root: RootComponent) {
+    val stack by root.navigator.router.subscribeAsState()
+    Children(
+        stack = stack,
+        modifier = Modifier.fillMaxSize(),
+        animation = stackAnimation(slide()),
+        content = { child ->
+            root.navigator.getContentByChild(child.instance)
         }
+    )
+}
+
+@Composable
+private fun DialogsContent(root: RootComponent) {
+    val dialogSlot by root.dialogs.router.subscribeAsState()
+    dialogSlot.child?.instance?.let { child ->
+        root.dialogs.getContentByChild(child)
     }
 }

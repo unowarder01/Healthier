@@ -39,10 +39,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import unowarder01.healthier.core.common.AppLanguage
-import unowarder01.healthier.core.designsystem.AppLogo
-import unowarder01.healthier.core.designsystem.HealthierTokens
-import unowarder01.healthier.core.designsystem.TextKey
-import unowarder01.healthier.core.designsystem.appString
+import unowarder01.healthier.core.designsystem.components.image.AppLogo
+import unowarder01.healthier.core.designsystem.theme.HealthierTokens
+import unowarder01.healthier.core.designsystem.strings.TextKey
+import unowarder01.healthier.core.designsystem.strings.appString
 import unowarder01.healthier.features.auth.ui.AuthContract.Listener
 import unowarder01.healthier.core.platform.SocialProvider
 
@@ -72,8 +72,9 @@ fun AuthMainScreen(
         ) {
             Spacer(Modifier.size(28.dp))
             AppLogo(
-                size = 64.dp,
-                modifier = Modifier.testTag("auth_logo")
+                modifier = Modifier
+                    .size(64.dp)
+                    .testTag("auth_logo")
             )
             Spacer(Modifier.size(20.dp))
             Text(

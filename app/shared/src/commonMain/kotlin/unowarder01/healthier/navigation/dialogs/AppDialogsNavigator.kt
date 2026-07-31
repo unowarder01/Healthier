@@ -32,9 +32,9 @@ import kotlinx.coroutines.launch
 import unowarder01.healthier.core.common.AppLanguage
 import unowarder01.healthier.core.common.AppResult
 import unowarder01.healthier.core.common.AppTheme
-import unowarder01.healthier.core.designsystem.HealthierTokens
-import unowarder01.healthier.core.designsystem.TextKey
-import unowarder01.healthier.core.designsystem.appString
+import unowarder01.healthier.core.designsystem.theme.HealthierTokens
+import unowarder01.healthier.core.designsystem.strings.TextKey
+import unowarder01.healthier.core.designsystem.strings.appString
 import unowarder01.healthier.core.platform.PhotoPicker
 import unowarder01.healthier.features.profile.domain.Profile
 import unowarder01.healthier.features.profile.ui.ProfileContract.Message

@@ -8,7 +8,7 @@ import unowarder01.healthier.core.presentation.component.BaseFeatureComponent
 import unowarder01.healthier.features.splash.ui.SplashContract.Action
 import unowarder01.healthier.features.splash.ui.SplashContract.Action.NavigateToAuth
 import unowarder01.healthier.features.splash.ui.SplashContract.Intent
-import unowarder01.healthier.features.splash.ui.SplashContract.Intent.SelectLanguage
+import unowarder01.healthier.features.splash.ui.SplashContract.Intent.OnLanguageClicked
 import unowarder01.healthier.features.splash.ui.SplashContract.Listener
 import unowarder01.healthier.features.splash.ui.SplashContract.State
 
@@ -33,7 +33,7 @@ class SplashComponent(
     /**
      * LISTENER
      */
-    override fun onLanguageSelected(language: AppLanguage) {
-        intent(SelectLanguage(language))
+    override fun onLanguageClick(language: AppLanguage) {
+        intent(OnLanguageClicked(language))
     }
 }
