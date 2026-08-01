@@ -10,12 +10,19 @@ object OnboardingContract {
     sealed interface Intent: MVIIntent {
         data object OnPositiveButtonClicked: Intent
         data object OnNegativeButtonClicked: Intent
+        data class HandleNotificationStatus(val granted: NotificationStatus): Intent
     }
 
     data class State(
         val items: List<OnboardingData> = getOnboardingItemsData(),
-        val currentPage: Int = 0,
+        val currentPage: Int = 0
     ): MVIState
+
+    enum class NotificationStatus {
+        Skipped,
+        Granted,
+        NotAllowed
+    }
 
     sealed interface Action: MVIAction {
         data object NavigateToAuth: Action

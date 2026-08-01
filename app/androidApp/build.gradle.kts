@@ -22,11 +22,13 @@ kotlin {
 dependencies {
     implementation(project(":app:shared"))
     implementation(project(":core:database"))
+    implementation(project(":core:presentation"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.splash.screen)
     implementation(libs.androidx.concurrent.futures)
     implementation(libs.decompose)
+    implementation(libs.kmpnotifier)
 
     implementation(libs.compose.uiToolingPreview)
     debugImplementation(libs.compose.uiTooling)

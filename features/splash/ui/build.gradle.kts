@@ -16,5 +16,6 @@ kotlin {
          */
         implementation(libs.koin.core)
         implementation(libs.compose.constraintLayout)
+        implementation(libs.kmpnotifier)
     }
 }
