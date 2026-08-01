@@ -7,7 +7,7 @@ import unowarder01.healthier.designsystem.generated.resources.ic_app_logo
 
 @Composable
 fun AppLogo(
-    modifier: Modifier = Modifier
+    modifier: Modifier
 ) {
     AppImage(
         image = Res.drawable.ic_app_logo,

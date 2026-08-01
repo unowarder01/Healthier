@@ -121,9 +121,7 @@ class AppScreensNavigatorImpl(
         val state by child.component.subscribeState()
         AuthMainScreen(
             state = state,
-            listener = child.component,
-            providers = child.component.providers,
-            language = language
+            listener = child.component
         )
     }
 

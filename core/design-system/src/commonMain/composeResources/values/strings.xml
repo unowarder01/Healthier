@@ -1,4 +1,5 @@
 <resources>
+    <string name="terms_and_privacy_agreement">Продолжая, вы соглашаетесь с &lt;terms&gt;Условиями Пользования&lt;/terms&gt; и &lt;privacy&gt;Политикой Приватности&lt;/privacy&gt;</string>
     <string name="app_name">Healthier</string>
     <string name="language_ka">ქართული</string>
     <string name="language_en">English</string>

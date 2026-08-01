@@ -1,11 +1,7 @@
 package unowarder01.healthier.features.auth.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,217 +9,199 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.MaterialTheme.shapes
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
-import unowarder01.healthier.core.common.AppLanguage
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.stringResource
+import unowarder01.healthier.core.designsystem.components.image.AppImage
 import unowarder01.healthier.core.designsystem.components.image.AppLogo
-import unowarder01.healthier.core.designsystem.theme.HealthierTokens
-import unowarder01.healthier.core.designsystem.strings.TextKey
-import unowarder01.healthier.core.designsystem.strings.appString
+import unowarder01.healthier.core.designsystem.components.text.ClickableTextWithTags
+import unowarder01.healthier.designsystem.generated.resources.Res
+import unowarder01.healthier.designsystem.generated.resources.ic_apple
+import unowarder01.healthier.designsystem.generated.resources.ic_google
+import unowarder01.healthier.designsystem.generated.resources.ic_meta
+import unowarder01.healthier.designsystem.generated.resources.ic_protected
+import unowarder01.healthier.designsystem.generated.resources.ic_telegram
+import unowarder01.healthier.designsystem.generated.resources.terms_and_privacy_agreement
 import unowarder01.healthier.features.auth.ui.AuthContract.Listener
-import unowarder01.healthier.core.platform.SocialProvider
+import unowarder01.healthier.features.auth.ui.AuthContract.State
+import unowarder01.healthier.features.auth.ui.ClickableTextTags.PRIVACY_TAG
+import unowarder01.healthier.features.auth.ui.ClickableTextTags.TERMS_TAG
 
 @Composable
 fun AuthMainScreen(
-    state: AuthContract.State,
-    listener: Listener,
-    providers: Set<SocialProvider>,
-    language: AppLanguage
+    state: State,
+    listener: Listener
 ) {
-    LaunchedEffect(Unit) {
-        delay(500)
-        listener.onScreenShown()
-    }
-
-    Box(
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .imePadding()
-            .padding(horizontal = HealthierTokens.pageHorizontalPadding)
+            .background(Color(0xFFF7F7FA))
+            .systemBarsPadding()
     ) {
+        AppLogo()
+        Spacer(modifier = Modifier.weight(1f))
+        Title()
+        YourDataProtected()
+        Spacer(modifier = Modifier.weight(1f))
+        AuthButtons()
+        AgreementText()
+    }
+}
+
+/**
+ * LOGO
+ */
+@Composable
+private fun AppLogo() {
+    AppLogo(
+        modifier = Modifier
+            .padding(top = 16.dp)
+            .size(108.dp)
+            .clip(shapes.extraLarge)
+    )
+}
+
+/**
+ * TITLE
+ */
+@Composable
+private fun Title() {
+    Text(
+        text = "Авторизация",
+        color = Color(0xFF17171B),
+        style = typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
+    )
+}
+
+/**
+ * YOUR DATA PROTECTED
+ */
+@Composable
+private fun YourDataProtected() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+            .fillMaxWidth()
+            .clip(shapes.extraLarge)
+            .background(
+                color = Color(0xFFF0F1F6),
+                shape = shapes.extraLarge
+            )
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        AppImage(
+            image = Res.drawable.ic_protected,
+            modifier = Modifier.size(27.dp)
+        )
         Column(
-            modifier = Modifier.align(Alignment.TopCenter),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.padding(start = 16.dp)
         ) {
-            Spacer(Modifier.size(28.dp))
-            AppLogo(
-                modifier = Modifier
-                    .size(64.dp)
-                    .testTag("auth_logo")
-            )
-            Spacer(Modifier.size(20.dp))
             Text(
-                text = "Healthier",
-                style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                text = "Ваши данные защищены",
+                color = Color(0xFF17171B),
+                style = typography.labelLarge.copy(fontWeight = FontWeight.Bold),
             )
-            Spacer(Modifier.size(8.dp))
             Text(
-                text = appString(language, TextKey.Auth),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                text = "Данные хранятся в зашифрованном виде, а ключи шифрования - локально на вашем устройстве.",
+                color = Color(0xFF626272),
+                style = typography.labelMedium,
+                modifier = Modifier.padding(top = 4.dp)
             )
         }
+    }
+}
 
-        AnimatedVisibility(
-            visible = state.visible,
-            modifier = Modifier.align(Alignment.BottomCenter),
-            enter = fadeIn(tween(180)) + slideInVertically(
-                animationSpec = tween(340, easing = FastOutSlowInEasing),
-                initialOffsetY = { it / 3 }
-            )
-        ) {
-            Card(
-                shape = MaterialTheme.shapes.large,
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = HealthierTokens.floatingElevation
-                ),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Text(
-                        text = appString(language, TextKey.Auth),
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                    providers.forEach { provider ->
-                        ProviderButton(
-                            provider = provider,
-                            language = language,
-                            loading = state.loadingProvider == provider,
-                            enabled = state.loadingProvider == null,
-                            onClick = { listener.onProviderSelected(provider) }
-                        )
-                    }
-                    state.error?.let {
-                        Text(
-                            text = appString(language, TextKey.NotConfigured),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.error,
-                            modifier = Modifier.testTag("auth_error")
-                        )
-                    }
-                }
-            }
+/**
+ * BUTTONS
+ */
+@Composable
+private fun AuthButtons() {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.padding(horizontal = 16.dp)
+    ) {
+        listOf(
+            "Продолжить с Apple" to Res.drawable.ic_apple,
+            "Продолжить с Google" to Res.drawable.ic_google,
+            "Продолжить с Meta" to Res.drawable.ic_meta,
+            "Продолжить с Telegram" to Res.drawable.ic_telegram,
+        ).forEach { (text, icon) ->
+            AuthButton(text = text, icon = icon)
         }
     }
 }
 
 @Composable
-private fun ProviderButton(
-    provider: SocialProvider,
-    language: AppLanguage,
-    loading: Boolean,
-    enabled: Boolean,
-    onClick: () -> Unit
+private fun AuthButton(
+    text: String,
+    icon: DrawableResource
 ) {
-    val label = "${appString(language, TextKey.ContinueWith)} ${provider.name}"
-    val modifier = Modifier
-        .fillMaxWidth()
-        .testTag("auth_${provider.name.lowercase()}")
-
-    when (provider) {
-        SocialProvider.Apple -> Button(
-            onClick = onClick,
-            enabled = enabled,
-            modifier = modifier,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF171717),
-                contentColor = Color.White
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .clip(shapes.large)
+            .background(
+                color = Color(0xFFFFFFFF),
+                shape = shapes.large
             )
-        ) {
-            ProviderButtonContent(label, "●", loading)
-        }
-
-        SocialProvider.Google -> OutlinedButton(
-            onClick = onClick,
-            enabled = enabled,
-            modifier = modifier,
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-        ) {
-            ProviderButtonContent(label, "G", loading)
-        }
-
-        SocialProvider.Meta -> Button(
-            onClick = onClick,
-            enabled = enabled,
-            modifier = modifier,
-            colors = ButtonDefaults.buttonColors(containerColor = HealthierTokens.meta)
-        ) {
-            ProviderButtonContent(label, "f", loading)
-        }
-
-        SocialProvider.Telegram -> Button(
-            onClick = onClick,
-            enabled = enabled,
-            modifier = modifier,
-            colors = ButtonDefaults.buttonColors(containerColor = HealthierTokens.telegram)
-        ) {
-            ProviderButtonContent(label, "✈", loading)
-        }
+            .border(
+                width = 1.dp,
+                color = Color(0xFFD2D4DE),
+                shape = shapes.large
+            )
+    ) {
+        AppImage(
+            image = icon,
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .align(Alignment.CenterStart)
+                .size(25.dp)
+        )
+        Text(
+            text = text,
+            color = Color(0xFF17171B),
+            style = typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+            modifier = Modifier.align(Alignment.Center)
+        )
     }
 }
 
+/**
+ * AGREEMENT TEXT
+ */
 @Composable
-private fun ProviderButtonContent(
-    label: String,
-    mark: String,
-    loading: Boolean
-) {
-    if (loading) {
-        CircularProgressIndicator(
-            modifier = Modifier.size(20.dp),
-            color = MaterialTheme.colorScheme.onPrimary,
-            strokeWidth = 2.dp
-        )
-        return
-    }
+private fun AgreementText() {
+    ClickableTextWithTags(
+        fullText = stringResource(Res.string.terms_and_privacy_agreement),
+        tagHandlers = mapOf(
+            TERMS_TAG to {},
+            PRIVACY_TAG to {}
+        ),
+        linkStyle = SpanStyle(color = Color(0xFF17171B)),
+        textStyle = typography.labelSmall,
+        textColor = Color(0xFF626272),
+        modifier = Modifier.padding(vertical = 16.dp, horizontal = 24.dp)
+    )
+}
 
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            text = mark,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .size(24.dp)
-                .clip(CircleShape),
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = label,
-            modifier = Modifier
-                .weight(1f)
-                .padding(end = 24.dp),
-            textAlign = TextAlign.Center
-        )
-    }
+private object ClickableTextTags {
+    const val TERMS_TAG = "terms"
+    const val PRIVACY_TAG = "privacy"
 }
