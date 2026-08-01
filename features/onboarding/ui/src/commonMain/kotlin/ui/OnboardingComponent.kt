@@ -4,7 +4,11 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import pro.respawn.flowmvi.compose.dsl.subscribe
 import ui.OnboardingContract.Action
+import ui.OnboardingContract.Action.NavigateToAuth
+import ui.OnboardingContract.Action.RequestNotificationsPermission
 import ui.OnboardingContract.Intent
+import ui.OnboardingContract.Intent.OnNegativeButtonClicked
+import ui.OnboardingContract.Intent.OnPositiveButtonClicked
 import ui.OnboardingContract.Listener
 import ui.OnboardingContract.State
 import unowarder01.healthier.core.presentation.component.BaseComponent
@@ -17,6 +21,25 @@ class OnboardingComponent(
     context = context,
     viewModel = viewModel
 ) {
+    /**
+     * STATE
+     */
     @Composable
-    override fun subscribeState() = subscribe()
+    override fun subscribeState() = subscribe { action ->
+        when (action) {
+            is NavigateToAuth -> navigator.toAuth()
+            is RequestNotificationsPermission -> navigator.toAuth()
+        }
+    }
+
+    /**
+     * LISTENER
+     */
+    override fun onPositiveButtonClick() {
+        intent(OnPositiveButtonClicked)
+    }
+
+    override fun onNegativeButtonClick() {
+        intent(OnNegativeButtonClicked)
+    }
 }
