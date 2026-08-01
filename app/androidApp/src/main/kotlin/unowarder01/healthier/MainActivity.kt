@@ -8,7 +8,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.arkivanov.decompose.retainedComponent
 import com.mmk.kmpnotifier.permission.permissionUtil
-import unowarder01.healthier.core.database.createAndroidClinicCache
 import unowarder01.healthier.core.presentation.permissions.LocalNotificationPermissionRequester
 import unowarder01.healthier.core.presentation.permissions.NotificationPermissionRequester
 
@@ -30,12 +29,7 @@ class MainActivity : ComponentActivity() {
         )
         val root = retainedComponent { context ->
             createRootComponent(
-                componentContext = context,
-                runtime = AppRuntimeConfig(
-                    isDebug = BuildConfig.DEBUG,
-                    apiBaseUrl = BuildConfig.API_BASE_URL
-                ),
-                clinicCache = createAndroidClinicCache(applicationContext)
+                componentContext = context
             )
         }
         setContent {

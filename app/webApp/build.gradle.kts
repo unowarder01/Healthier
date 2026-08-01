@@ -21,7 +21,6 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":app:shared"))
-            implementation(project(":core:database"))
 
             implementation(libs.compose.ui)
             implementation(libs.decompose)

@@ -66,28 +66,16 @@ kotlin {
         commonMain.dependencies {
             implementation(project(":core:common"))
             implementation(project(":core:design-system"))
-            implementation(project(":core:network"))
-            implementation(project(":core:database"))
-            implementation(project(":core:preferences"))
             implementation(project(":core:mvi"))
             implementation(project(":core:presentation"))
-            implementation(project(":core:platform"))
 
             implementation(project(":features:splash:composition"))
             implementation(project(":features:onboarding:composition"))
             implementation(project(":features:auth:composition"))
-            implementation(project(":features:city:composition"))
-            implementation(project(":features:health:composition"))
-            implementation(project(":features:map:composition"))
-            implementation(project(":features:profile:composition"))
 
             implementation(project(":features:splash:ui"))
             implementation(project(":features:onboarding:ui"))
             implementation(project(":features:auth:ui"))
-            implementation(project(":features:city:ui"))
-            implementation(project(":features:health:ui"))
-            implementation(project(":features:map:ui"))
-            implementation(project(":features:profile:ui"))
 
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
@@ -101,9 +89,6 @@ kotlin {
             implementation(libs.decompose.compose)
             implementation(libs.essenty.lifecycle)
             implementation(libs.koin.core)
-            implementation(libs.multiplatform.settings)
-            implementation(libs.multiplatform.settings.noarg)
-            implementation(libs.ktor.client.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

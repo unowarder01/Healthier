@@ -12,9 +12,7 @@ object AuthContract {
         val visible: Boolean = false
     ) : MVIState
 
-    sealed interface Action : MVIAction {
-        data object NavigateToCity : Action
-    }
+    sealed interface Action : MVIAction
 
     interface Listener {
     }

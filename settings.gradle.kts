@@ -36,18 +36,12 @@ include(":server")
 include(
     ":core:common",
     ":core:design-system",
-    ":core:network",
-    ":core:database",
-    ":core:preferences",
     ":core:mvi",
     ":core:presentation",
-    ":core:platform",
 )
 
-listOf("splash", "auth", "city", "health", "map", "profile", "onboarding").forEach { feature ->
+listOf("splash", "auth", "onboarding").forEach { feature ->
     include(
-        ":features:$feature:domain",
-        ":features:$feature:data",
         ":features:$feature:ui",
         ":features:$feature:composition",
     )

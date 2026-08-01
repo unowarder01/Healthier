@@ -7,7 +7,6 @@ kotlin {
         /**
          * MODULES
          */
-        api(project(":features:splash:domain"))
         implementation(project(":core:design-system"))
         implementation(project(":core:presentation"))
         implementation(project(":core:mvi"))

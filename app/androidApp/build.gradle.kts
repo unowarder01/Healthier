@@ -1,13 +1,4 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.util.Properties
-
-val localConfiguration = Properties().apply {
-    val file = rootProject.file("local.properties")
-    if (file.isFile) file.inputStream().use(::load)
-}
-val apiBaseUrl = localConfiguration.getProperty("HEALTHIER_API_BASE_URL", "")
-    .replace("\\", "\\\\")
-    .replace("\"", "\\\"")
 
 plugins {
     alias(libs.plugins.androidApplication)
@@ -21,7 +12,6 @@ kotlin {
 }
 dependencies {
     implementation(project(":app:shared"))
-    implementation(project(":core:database"))
     implementation(project(":core:presentation"))
 
     implementation(libs.androidx.activity.compose)
@@ -48,7 +38,6 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "API_BASE_URL", "\"$apiBaseUrl\"")
     }
     packaging {
         resources {
@@ -70,6 +59,5 @@ android {
     }
     buildFeatures {
         compose = true
-        buildConfig = true
     }
 }

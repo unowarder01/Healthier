@@ -13,7 +13,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import unowarder01.healthier.core.common.AppTheme
 
 object HealthierTokens {
     val accent = Color(0xFF0B806A)
@@ -142,18 +141,11 @@ private val HealthierShapes = Shapes(
 
 @Composable
 fun HealthierTheme(
-    theme: AppTheme,
     systemDark: Boolean,
     content: @Composable () -> Unit
 ) {
-    val isDark = when (theme) {
-        AppTheme.System -> systemDark
-        AppTheme.Light -> false
-        AppTheme.Dark -> true
-    }
-
     MaterialTheme(
-        colorScheme = if (isDark) DarkColorScheme else LightColorScheme,
+        colorScheme = if (systemDark) DarkColorScheme else LightColorScheme,
         typography = HealthierTypography,
         shapes = HealthierShapes,
         content = content

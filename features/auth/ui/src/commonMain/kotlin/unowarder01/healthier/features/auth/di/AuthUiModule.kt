@@ -6,12 +6,11 @@ import unowarder01.healthier.features.auth.ui.AuthComponent
 import unowarder01.healthier.features.auth.ui.AuthViewModel
 
 val authUiModule = module {
-    factory { AuthViewModel(get(), get()) }
+    factory { AuthViewModel() }
     factory { (context: ComponentContext) ->
         AuthComponent(
             context = context,
-            viewModel = get(),
-            navigator = get()
+            viewModel = get()
         )
     }
 }
