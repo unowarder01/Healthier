@@ -2,6 +2,7 @@ package unowarder01.healthier
 
 import com.arkivanov.decompose.ComponentContext
 import com.russhwolf.settings.Settings
+import onboardingFeatureModule
 import org.koin.core.Koin
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.koinApplication
@@ -24,7 +25,7 @@ import unowarder01.healthier.features.health.di.healthFeatureModule
 import unowarder01.healthier.features.map.di.mapFeatureModule
 import unowarder01.healthier.features.profile.di.profileFeatureModule
 import unowarder01.healthier.features.splash.di.splashFeatureModule
-import unowarder01.healthier.navigation.AppScreensNavigator
+import unowarder01.healthier.navigation.screens.AppScreensNavigator
 import unowarder01.healthier.navigation.appNavigationModule
 import unowarder01.healthier.navigation.dialogs.AppDialogsNavigator
 
@@ -67,6 +68,7 @@ class AppGraph(
                 }
             },
             splashFeatureModule,
+            onboardingFeatureModule,
             authFeatureModule,
             cityFeatureModule,
             healthFeatureModule,

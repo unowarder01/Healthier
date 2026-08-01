@@ -4,9 +4,10 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import pro.respawn.flowmvi.compose.dsl.subscribe
 import unowarder01.healthier.core.common.AppLanguage
-import unowarder01.healthier.core.presentation.component.BaseFeatureComponent
+import unowarder01.healthier.core.presentation.component.BaseComponent
 import unowarder01.healthier.features.splash.ui.SplashContract.Action
 import unowarder01.healthier.features.splash.ui.SplashContract.Action.NavigateToAuth
+import unowarder01.healthier.features.splash.ui.SplashContract.Action.NavigateToOnboarding
 import unowarder01.healthier.features.splash.ui.SplashContract.Intent
 import unowarder01.healthier.features.splash.ui.SplashContract.Intent.OnLanguageClicked
 import unowarder01.healthier.features.splash.ui.SplashContract.Listener
@@ -16,7 +17,7 @@ class SplashComponent(
     context: ComponentContext,
     viewModel: SplashViewModel,
     private val navigator: SplashNavigator
-) : Listener, BaseFeatureComponent<State, Intent, Action, SplashViewModel>(
+) : Listener, BaseComponent<State, Intent, Action, SplashViewModel>(
     context = context,
     viewModel = viewModel
 ) {
@@ -27,6 +28,7 @@ class SplashComponent(
     override fun subscribeState() = subscribe { action ->
         when (action) {
             is NavigateToAuth -> navigator.toAuth()
+            is NavigateToOnboarding -> navigator.toOnboarding()
         }
     }
 

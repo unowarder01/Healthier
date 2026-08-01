@@ -5,7 +5,7 @@ import com.arkivanov.decompose.ComponentContext
 import pro.respawn.flowmvi.compose.dsl.subscribe
 import unowarder01.healthier.core.platform.MapAvailability
 import unowarder01.healthier.core.platform.MapRenderer
-import unowarder01.healthier.core.presentation.component.BaseFeatureComponent
+import unowarder01.healthier.core.presentation.component.BaseComponent
 import unowarder01.healthier.features.map.ui.MapContract.Action
 import unowarder01.healthier.features.map.ui.MapContract.Intent
 import unowarder01.healthier.features.map.ui.MapContract.Intent.DismissClinic
@@ -18,7 +18,7 @@ class MapComponent(
     viewModel: MapViewModel,
     renderer: MapRenderer,
     val navigator: MapNavigator
-) : BaseFeatureComponent<
+) : BaseComponent<
     State,
     Intent,
     Action,

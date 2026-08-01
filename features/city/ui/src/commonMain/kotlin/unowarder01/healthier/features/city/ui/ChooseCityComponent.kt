@@ -3,7 +3,7 @@ package unowarder01.healthier.features.city.ui
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import pro.respawn.flowmvi.compose.dsl.subscribe
-import unowarder01.healthier.core.presentation.component.BaseFeatureComponent
+import unowarder01.healthier.core.presentation.component.BaseComponent
 import unowarder01.healthier.features.city.ui.ChooseCityContract.Action
 import unowarder01.healthier.features.city.ui.ChooseCityContract.Action.NavigateHome
 import unowarder01.healthier.features.city.ui.ChooseCityContract.Intent
@@ -17,7 +17,7 @@ class ChooseCityComponent(
     context: ComponentContext,
     viewModel: ChooseCityViewModel,
     private val navigator: ChooseCityNavigator
-) : BaseFeatureComponent<
+) : BaseComponent<
     State,
     Intent,
     Action,

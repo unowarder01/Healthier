@@ -74,6 +74,7 @@ kotlin {
             implementation(project(":core:platform"))
 
             implementation(project(":features:splash:composition"))
+            implementation(project(":features:onboarding:composition"))
             implementation(project(":features:auth:composition"))
             implementation(project(":features:city:composition"))
             implementation(project(":features:health:composition"))
@@ -81,6 +82,7 @@ kotlin {
             implementation(project(":features:profile:composition"))
 
             implementation(project(":features:splash:ui"))
+            implementation(project(":features:onboarding:ui"))
             implementation(project(":features:auth:ui"))
             implementation(project(":features:city:ui"))
             implementation(project(":features:health:ui"))

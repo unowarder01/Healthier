@@ -21,6 +21,7 @@ object SplashContract {
 
     sealed interface Action : MVIAction {
         data object NavigateToAuth : Action
+        data object NavigateToOnboarding : Action
     }
 
     interface Listener {

@@ -3,7 +3,7 @@ package unowarder01.healthier.features.profile.ui
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import pro.respawn.flowmvi.compose.dsl.subscribe
-import unowarder01.healthier.core.presentation.component.BaseFeatureComponent
+import unowarder01.healthier.core.presentation.component.BaseComponent
 import unowarder01.healthier.features.profile.ui.ProfileContract.Action
 import unowarder01.healthier.features.profile.ui.ProfileContract.Action.ShowLanguageSelector
 import unowarder01.healthier.features.profile.ui.ProfileContract.Action.ShowMessage
@@ -26,7 +26,7 @@ class ProfileComponent(
     context: ComponentContext,
     viewModel: ProfileViewModel,
     private val navigator: ProfileNavigator
-) : BaseFeatureComponent<
+) : BaseComponent<
     State,
     Intent,
     Action,

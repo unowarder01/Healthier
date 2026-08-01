@@ -3,7 +3,7 @@ package unowarder01.healthier.features.health.ui
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import pro.respawn.flowmvi.compose.dsl.subscribe
-import unowarder01.healthier.core.presentation.component.BaseFeatureComponent
+import unowarder01.healthier.core.presentation.component.BaseComponent
 import unowarder01.healthier.features.health.ui.HealthContract.Action
 import unowarder01.healthier.features.health.ui.HealthContract.Intent
 import unowarder01.healthier.features.health.ui.HealthContract.Intent.Load
@@ -15,7 +15,7 @@ class HealthComponent(
     context: ComponentContext,
     viewModel: HealthViewModel,
     val navigator: HealthNavigator
-) : BaseFeatureComponent<
+) : BaseComponent<
     State,
     Intent,
     Action,

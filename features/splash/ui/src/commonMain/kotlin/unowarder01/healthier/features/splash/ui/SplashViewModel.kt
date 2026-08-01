@@ -7,6 +7,7 @@ import unowarder01.healthier.core.presentation.viewmodel.BaseViewModel
 import unowarder01.healthier.features.splash.domain.usecase.SelectLanguageUseCase
 import unowarder01.healthier.features.splash.ui.SplashContract.Action
 import unowarder01.healthier.features.splash.ui.SplashContract.Action.NavigateToAuth
+import unowarder01.healthier.features.splash.ui.SplashContract.Action.NavigateToOnboarding
 import unowarder01.healthier.features.splash.ui.SplashContract.Intent
 import unowarder01.healthier.features.splash.ui.SplashContract.Intent.OnLanguageClicked
 import unowarder01.healthier.features.splash.ui.SplashContract.State
@@ -30,7 +31,7 @@ class SplashViewModel(
                 selectLanguageUseCase(intent.language)
                 updateState { copy(selectedLanguage = intent.language) }
                 delay(300.milliseconds) // RadioButton select animation duration
-                action(NavigateToAuth)
+                action(NavigateToOnboarding)
             }
         }
     }
