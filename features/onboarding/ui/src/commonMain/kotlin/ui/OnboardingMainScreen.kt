@@ -82,9 +82,8 @@ private fun Toolbar(
             .fillMaxWidth()
     ) {
         AppLogo(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(shapes.small)
+            shape = shapes.small,
+            modifier = Modifier.size(40.dp)
         )
         Spacer(
             modifier = Modifier.weight(1f)

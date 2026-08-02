@@ -26,7 +26,7 @@ class SplashViewModel : BaseViewModel<State, Intent, Action>(
         when (intent) {
             is OnLanguageClicked -> {
                 updateState { copy(selectedLanguage = intent.language) }
-                delay(300.milliseconds) // RadioButton select animation duration
+                delay(600.milliseconds) // LanguageItem select animation duration * 2
                 action(NavigateToOnboarding)
             }
         }

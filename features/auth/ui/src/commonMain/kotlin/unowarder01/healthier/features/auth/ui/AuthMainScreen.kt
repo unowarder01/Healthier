@@ -69,7 +69,6 @@ private fun AppLogo() {
         modifier = Modifier
             .padding(top = 16.dp)
             .size(108.dp)
-            .clip(shapes.extraLarge)
     )
 }
 

@@ -2,15 +2,19 @@ package unowarder01.healthier.features.splash.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -159,14 +163,9 @@ private fun Languages(
     state: State,
     listener: Listener
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(shapes.large)
-            .background(
-                color = Color(0xFF18181E),
-                shape = shapes.large
-            )
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.fillMaxWidth()
     ) {
         AppLanguage.entries.forEach { language ->
             Language(
@@ -179,18 +178,31 @@ private fun Languages(
 }
 
 @Composable
-private fun Language(
+private fun RowScope.Language(
     language: AppLanguage,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    val borderColor by animateColorAsState(
+        targetValue = if (isSelected) Color(0xFFB8B8C4) else Color.Transparent,
+        animationSpec = tween()
+    )
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
-            .fillMaxWidth()
+            .weight(1f)
             .height(56.dp)
+            .clip(shapes.large)
+            .background(
+                color = Color(0xFF18181E),
+                shape = shapes.large
+            )
+            .border(
+                width = 1.dp,
+                color = borderColor,
+                shape = shapes.large
+            )
             .clickable { onClick() }
-            .padding(horizontal = 16.dp)
             .testTag("language_${language.code}")
     ) {
         AppImage(
@@ -199,25 +211,6 @@ private fun Language(
                 .size(28.dp)
                 .clip(CircleShape)
                 .semantics { contentDescription = "${language.englishName} flag" }
-        )
-        Text(
-            text = language.nativeName,
-            color = Color(0xFFF7F7FA),
-            style = typography.bodyLarge,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .weight(1f)
-        )
-        RadioButton(
-            selected = isSelected,
-            onClick = null,
-            colors = RadioButtonDefaults.colors(
-                unselectedColor = Color(0xFF393943),
-                selectedColor = Color(0xFFF7F7FA)
-            ),
-            modifier = Modifier.alpha(if (isSelected) 1f else 0.9f)
         )
     }
 }
