@@ -23,12 +23,12 @@ private fun AppContent(root: RootComponent) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        ScreensContent(root)
+        StartScreensContent(root)
     }
 }
 
 @Composable
-private fun ScreensContent(root: RootComponent) {
+private fun StartScreensContent(root: RootComponent) {
     val stack by root.navigator.router.subscribeAsState()
     Children(
         stack = stack,

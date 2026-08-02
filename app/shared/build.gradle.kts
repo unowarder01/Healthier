@@ -64,11 +64,17 @@ kotlin {
             implementation(libs.compose.uiTooling)
         }
         commonMain.dependencies {
+            /**
+             * COMMON
+             */
             implementation(project(":core:common"))
             implementation(project(":core:design-system"))
             implementation(project(":core:mvi"))
             implementation(project(":core:presentation"))
 
+            /**
+             * START
+             */
             implementation(project(":features:splash:composition"))
             implementation(project(":features:onboarding:composition"))
             implementation(project(":features:auth:composition"))
@@ -78,6 +84,19 @@ kotlin {
             implementation(project(":features:onboarding:ui"))
             implementation(project(":features:auth:ui"))
             implementation(project(":features:city:ui"))
+
+            /**
+             * MAIN
+             */
+            implementation(project(":features:health:composition"))
+            implementation(project(":features:map:composition"))
+            implementation(project(":features:calendar:composition"))
+            implementation(project(":features:profile:composition"))
+
+            implementation(project(":features:health:ui"))
+            implementation(project(":features:map:ui"))
+            implementation(project(":features:calendar:ui"))
+            implementation(project(":features:profile:ui"))
 
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
