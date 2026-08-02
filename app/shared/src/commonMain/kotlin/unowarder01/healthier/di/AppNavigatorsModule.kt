@@ -17,7 +17,6 @@ import unowarder01.healthier.navigation.screens.main.child_navigators.CalendarNa
 import unowarder01.healthier.navigation.screens.main.child_navigators.HealthNavigatorImpl
 import unowarder01.healthier.navigation.screens.main.child_navigators.MapNavigatorImpl
 import unowarder01.healthier.navigation.screens.main.child_navigators.ProfileNavigatorImpl
-import unowarder01.healthier.navigation.screens.main.root_navigator.MainScreensConfig
 import unowarder01.healthier.navigation.screens.main.root_navigator.MainScreensNavigator
 import unowarder01.healthier.navigation.screens.main.root_navigator.MainScreensNavigatorImpl
 import unowarder01.healthier.navigation.screens.start.child_navigators.AuthNavigatorImpl
@@ -48,11 +47,9 @@ val appNavigatorsModule = module {
     /**
      * MAIN
      */
-    single { StackNavigation<MainScreensConfig>() }
-    single<MainScreensNavigator> { (context: ComponentContext) ->
+    factory<MainScreensNavigator> { (context: ComponentContext) ->
         MainScreensNavigatorImpl(
             context = context,
-            navigation = get(),
             koin = getKoin()
         )
     }

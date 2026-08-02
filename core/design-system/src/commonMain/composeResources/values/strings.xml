@@ -17,4 +17,8 @@
     <string name="skip">Skip</string>
     <string name="enable_notifications">Enable notifications</string>
     <string name="decline">Decline</string>
+    <string name="health">Health</string>
+    <string name="map">Map</string>
+    <string name="calendar">Calendar</string>
+    <string name="profile">Profile</string>
 </resources>

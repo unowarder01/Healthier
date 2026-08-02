@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import unowarder01.healthier.core.designsystem.components.image.AppImage
@@ -42,9 +44,10 @@ import unowarder01.healthier.designsystem.generated.resources.Res
 import unowarder01.healthier.designsystem.generated.resources.ic_arrow_right
 import unowarder01.healthier.designsystem.generated.resources.ic_location_pin
 import unowarder01.healthier.designsystem.generated.resources.ic_search
+import unowarder01.healthier.features.city.ui.CityContract.Listener
 
 @Composable
-fun CityMainScreen() {
+fun CityMainScreen(listener: Listener) {
     val listState = rememberLazyListState()
     val showHeaderShadow by remember {
         derivedStateOf { listState.canScrollBackward }
@@ -61,7 +64,7 @@ fun CityMainScreen() {
         stickyHeader {
             TitleAndSearchHeader(showShadow = showHeaderShadow)
         }
-        cities()
+        cities(onCityClick = listener::onCityClick)
     }
 }
 
@@ -145,23 +148,23 @@ private fun Header(modifier: Modifier = Modifier) {
 /**
  * CITIES
  */
-private fun LazyListScope.cities() {
+private fun LazyListScope.cities(onCityClick: () -> Unit) {
     item { Header(modifier = Modifier.padding(top = 8.dp)) }
     item { Spacer(modifier = Modifier.padding(top = 8.dp)) }
     items(3) {
-        City()
+        City(onClick = onCityClick)
         Spacer(modifier = Modifier.padding(top = 8.dp))
     }
     item { Header(modifier = Modifier.padding(top = 16.dp)) }
     item { Spacer(modifier = Modifier.padding(top = 8.dp)) }
     items(12) {
-        City()
+        City(onClick = onCityClick)
         Spacer(modifier = Modifier.padding(top = 8.dp))
     }
 }
 
 @Composable
-private fun City() {
+private fun City(onClick: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -177,6 +180,10 @@ private fun City() {
                 width = 1.dp,
                 color = colorScheme.outlineVariant,
                 shape = shapes.large
+            )
+            .clickable(
+                role = Role.Button,
+                onClick = onClick
             )
             .padding(horizontal = 16.dp)
     ) {

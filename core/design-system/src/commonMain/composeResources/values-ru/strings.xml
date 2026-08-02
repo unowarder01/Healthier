@@ -17,4 +17,8 @@
     <string name="skip">Пропустить</string>
     <string name="enable_notifications">Включить уведомления</string>
     <string name="decline">Отказаться</string>
+    <string name="health">Здоровье</string>
+    <string name="map">Карта</string>
+    <string name="calendar">Календарь</string>
+    <string name="profile">Профиль</string>
 </resources>

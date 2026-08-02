@@ -9,6 +9,7 @@ import unowarder01.healthier.features.splash.ui.SplashNavigator
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig.AuthConfig
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig.CityConfig
+import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig.MainConfig
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig.OnboardingConfig
 
 /**
@@ -51,4 +52,10 @@ class AuthNavigatorImpl(
 /**
  * CITY
  */
-class CityNavigatorImpl : CityNavigator
+class CityNavigatorImpl(
+    private val navigation: StackNavigation<StartScreensConfig>,
+) : CityNavigator {
+    override fun toMain() {
+        navigation.replaceAll(MainConfig)
+    }
+}

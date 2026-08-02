@@ -17,4 +17,8 @@
     <string name="skip">გამოტოვება</string>
     <string name="enable_notifications">შეტყობინებების ჩართვა</string>
     <string name="decline">უარის თქმა</string>
+    <string name="health">ჯანმრთელობა</string>
+    <string name="map">რუკა</string>
+    <string name="calendar">კალენდარი</string>
+    <string name="profile">პროფილი</string>
 </resources>

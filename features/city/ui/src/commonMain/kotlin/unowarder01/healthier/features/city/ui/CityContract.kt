@@ -11,5 +11,7 @@ object CityContract {
 
     sealed interface Action : MVIAction
 
-    interface Listener
+    interface Listener {
+        fun onCityClick()
+    }
 }

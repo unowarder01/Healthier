@@ -15,12 +15,16 @@ import unowarder01.healthier.features.city.ui.CityComponent
 import unowarder01.healthier.features.city.ui.CityMainScreen
 import unowarder01.healthier.features.splash.ui.SplashComponent
 import unowarder01.healthier.features.splash.ui.SplashMainScreen
+import unowarder01.healthier.navigation.screens.main.root_navigator.MainScreensContent
+import unowarder01.healthier.navigation.screens.main.root_navigator.MainScreensNavigator
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensChild.AuthChild
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensChild.CityChild
+import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensChild.MainChild
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensChild.OnboardingChild
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensChild.SplashChild
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig.AuthConfig
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig.CityConfig
+import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig.MainConfig
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig.OnboardingConfig
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig.SplashConfig
 
@@ -35,8 +39,8 @@ class StartScreensNavigatorImpl(
     override val router = childStack(
         key = "StartScreensNavigator",
         source = navigation,
-        serializer = null,
-        initialConfiguration = SplashConfig,
+        serializer = StartScreensConfig.serializer(),
+        initialConfiguration = MainConfig,
         handleBackButton = true,
         childFactory = ::createChild
     )
@@ -49,6 +53,7 @@ class StartScreensNavigatorImpl(
         is OnboardingConfig -> buildOnboardingChild(context)
         is AuthConfig -> buildAuthChild(context)
         is CityConfig -> buildCityChild(context)
+        is MainConfig -> buildMainChild(context)
     }
 
     /**
@@ -113,7 +118,20 @@ class StartScreensNavigatorImpl(
     @Composable
     private fun CityContent(child: CityChild) {
         child.component.subscribeState()
-        CityMainScreen()
+        CityMainScreen(listener = child.component)
+    }
+
+    /**
+     * MAIN
+     */
+    private fun buildMainChild(context: ComponentContext) = run {
+        val navigator = koin.get<MainScreensNavigator> { parametersOf(context) }
+        MainChild(navigator)
+    }
+
+    @Composable
+    private fun MainContent(child: MainChild) {
+        MainScreensContent(navigator = child.navigator)
     }
 
     /**
@@ -126,6 +144,7 @@ class StartScreensNavigatorImpl(
             is OnboardingChild -> OnboardingContent(child)
             is AuthChild -> AuthContent(child)
             is CityChild -> CityContent(child)
+            is MainChild -> MainContent(child)
         }
     }
 }

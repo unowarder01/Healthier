@@ -19,4 +19,8 @@ class CityComponent(
 ) {
     @Composable
     override fun subscribeState() = subscribe { }
+
+    override fun onCityClick() {
+        navigator.toMain()
+    }
 }

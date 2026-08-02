@@ -1,3 +1,5 @@
 package unowarder01.healthier.features.city.ui
 
-interface CityNavigator
+interface CityNavigator {
+    fun toMain()
+}
