@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_language">აპლიკაციის ენა</string>
+    <string name="authorization">ავტორიზაცია</string>
+    <string name="continue_with_apple">გააგრძელეთ Apple-ით</string>
+    <string name="continue_with_google">გააგრძელეთ Google-ით</string>
+    <string name="continue_with_meta">გააგრძელეთ Meta-თი</string>
+    <string name="continue_with_telegram">გააგრძელეთ Telegram-ით</string>
+    <string name="terms_and_privacy_agreement">გაგრძელებით თქვენ ეთანხმებით &lt;terms&gt;გამოყენების პირობებს&lt;/terms&gt; და &lt;privacy&gt;კონფიდენციალურობის პოლიტიკას&lt;/privacy&gt;</string>
+    <string name="onboarding_page_indicator">%1$d / %2$d</string>
+    <string name="onboarding_find_doctor_title">იპოვეთ სასურველი ექიმი</string>
+    <string name="onboarding_find_doctor_description">დაახარისხეთ ექიმები სპეციალობის, ენების, ფასისა და თავისუფალი დროის მიხედვით.</string>
+    <string name="onboarding_schedule_appointment_title">ჩაეწერეთ ზარის გარეშე</string>
+    <string name="onboarding_schedule_appointment_description">აირჩიეთ კლინიკა, თარიღი და თქვენთვის მოსახერხებელი დრო პირდაპირ აპლიკაციაში.</string>
+    <string name="onboarding_reminder_title">მნიშვნელოვანს შეგახსენებთ</string>
+    <string name="onboarding_reminder_description">ჩართეთ შეტყობინებები — ასე შეგახსენებთ მომავალ ვიზიტს ან მზად არსებულ ანალიზებს. გპირდებით, უმიზეზოდ არ შეგაწუხებთ.</string>
+    <string name="continue_action">გაგრძელება</string>
+    <string name="skip">გამოტოვება</string>
+    <string name="enable_notifications">შეტყობინებების ჩართვა</string>
+    <string name="decline">უარის თქმა</string>
+</resources>

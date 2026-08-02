@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
@@ -15,10 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.stringResource
 import unowarder01.healthier.core.designsystem.components.button.AppButtonState.BlackWithWhiteText
 import unowarder01.healthier.core.designsystem.components.button.AppButtonState.RedWithWhiteText
 import unowarder01.healthier.core.designsystem.components.button.AppButtonState.TransparentWithPurpleText
@@ -41,19 +39,20 @@ fun AppButton(
     modifier: Modifier
 ) {
     val backgroundColor = when (state) {
-        BlackWithWhiteText -> Color(0xFF17171B)
-        WhiteWithBlackText -> Color(0xFFFFFFFF)
-        RedWithWhiteText -> Color(0xFFD92D20)
+        BlackWithWhiteText -> colorScheme.primary
+        WhiteWithBlackText -> colorScheme.surface
+        RedWithWhiteText -> colorScheme.error
         TransparentWithPurpleText -> Color.Transparent
     }
     val borderColor = when (state) {
-        WhiteWithBlackText -> Color(0xFFAEB1BE)
+        WhiteWithBlackText -> colorScheme.outline
         else -> Color.Transparent
     }
     val textColor = when (state) {
-        BlackWithWhiteText, RedWithWhiteText -> Color(0xFFFFFFFF)
-        WhiteWithBlackText -> Color(0xFF17171B)
-        TransparentWithPurpleText -> Color(0xFF5B4AE8)
+        BlackWithWhiteText -> colorScheme.onPrimary
+        WhiteWithBlackText -> colorScheme.onSurface
+        RedWithWhiteText -> colorScheme.onError
+        TransparentWithPurpleText -> colorScheme.secondary
     }
     val clickModifier = when (state) {
         TransparentWithPurpleText -> Modifier.clickableWithoutShadow { onClick() }

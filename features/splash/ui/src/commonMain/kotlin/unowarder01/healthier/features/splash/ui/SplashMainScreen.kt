@@ -24,31 +24,30 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import org.jetbrains.compose.resources.stringResource
 import unowarder01.healthier.core.common.AppLanguage
 import unowarder01.healthier.core.common.AppLanguage.English
 import unowarder01.healthier.core.common.AppLanguage.Georgian
 import unowarder01.healthier.core.common.AppLanguage.Russian
 import unowarder01.healthier.core.designsystem.components.image.AppImage
 import unowarder01.healthier.designsystem.generated.resources.Res
+import unowarder01.healthier.designsystem.generated.resources.app_language
 import unowarder01.healthier.designsystem.generated.resources.ic_flag_ge
 import unowarder01.healthier.designsystem.generated.resources.ic_flag_ru
 import unowarder01.healthier.designsystem.generated.resources.ic_flag_uk
@@ -143,7 +142,7 @@ private fun BoxScope.TitleAndLanguages(
             .fillMaxWidth()
     ) {
         Text(
-            text = "App language",
+            text = stringResource(Res.string.app_language),
             style = typography.headlineMedium,
             color = Color(0xFFF7F7FA),
             textAlign = TextAlign.Center,

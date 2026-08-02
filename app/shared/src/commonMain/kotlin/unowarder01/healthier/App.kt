@@ -1,6 +1,5 @@
 package unowarder01.healthier
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -14,9 +13,7 @@ import unowarder01.healthier.core.designsystem.theme.HealthierTheme
 
 @Composable
 fun App(root: RootComponent) {
-    HealthierTheme(
-        systemDark = isSystemInDarkTheme()
-    ) {
+    HealthierTheme {
         AppContent(root)
     }
 }

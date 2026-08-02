@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
@@ -23,14 +24,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 import ui.OnboardingContract.Listener
 import ui.OnboardingContract.State
 import ui.content.OnboardingData
 import unowarder01.healthier.core.designsystem.components.button.AppButton
 import unowarder01.healthier.core.designsystem.components.button.AppButtonState
 import unowarder01.healthier.core.designsystem.components.image.AppLogo
+import unowarder01.healthier.designsystem.generated.resources.Res
+import unowarder01.healthier.designsystem.generated.resources.onboarding_page_indicator
 
 @Composable
 fun OnboardingMainScreen(
@@ -49,7 +53,7 @@ fun OnboardingMainScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF7F7FA))
+            .background(colorScheme.background)
             .systemBarsPadding()
     ) {
         Toolbar(
@@ -89,9 +93,13 @@ private fun Toolbar(
             modifier = Modifier.weight(1f)
         )
         Text(
-            text = "${currentPage + 1} / $totalPagesCount",
+            text = stringResource(
+                Res.string.onboarding_page_indicator,
+                currentPage + 1,
+                totalPagesCount
+            ),
             style = typography.bodyMedium,
-            color = Color(0xFF626272)
+            color = colorScheme.onSurfaceVariant
         )
     }
 }
@@ -129,28 +137,28 @@ private fun ContentContainer() {
             .height(334.dp)
             .clip(shapes.extraLarge)
             .background(
-                color = Color(0xFFECE9FF),
+                color = colorScheme.secondaryContainer,
                 shape = shapes.extraLarge
             )
     )
 }
 
 @Composable
-private fun Title(text: String) {
+private fun Title(text: StringResource) {
     Text(
-        text = text,
+        text = stringResource(text),
         style = typography.headlineMedium,
-        color = Color(0xFF17171B),
+        color = colorScheme.onBackground,
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp)
     )
 }
 
 @Composable
-private fun Description(text: String) {
+private fun Description(text: StringResource) {
     Text(
-        text = text,
+        text = stringResource(text),
         style = typography.bodyLarge,
-        color = Color(0xFF626272),
+        color = colorScheme.onSurfaceVariant,
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp)
     )
 }
@@ -168,14 +176,14 @@ private fun Buttons(
         modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
     ) {
         AppButton(
-            text = item.positiveButtonText,
+            text = stringResource(item.positiveButtonText),
             style = typography.bodyLarge,
             state = AppButtonState.BlackWithWhiteText,
             onClick = { listener.onPositiveButtonClick() },
             modifier = Modifier.fillMaxWidth()
         )
         AppButton(
-            text = item.negativeButtonText,
+            text = stringResource(item.negativeButtonText),
             state = AppButtonState.TransparentWithPurpleText,
             onClick = { listener.onNegativeButtonClick() },
             modifier = Modifier.padding(top = 4.dp)

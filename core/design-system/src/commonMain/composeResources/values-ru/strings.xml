@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_language">Язык приложения</string>
+    <string name="authorization">Авторизация</string>
+    <string name="continue_with_apple">Продолжить с Apple</string>
+    <string name="continue_with_google">Продолжить с Google</string>
+    <string name="continue_with_meta">Продолжить с Meta</string>
+    <string name="continue_with_telegram">Продолжить с Telegram</string>
+    <string name="terms_and_privacy_agreement">Продолжая, вы соглашаетесь с &lt;terms&gt;Условиями использования&lt;/terms&gt; и &lt;privacy&gt;Политикой конфиденциальности&lt;/privacy&gt;</string>
+    <string name="onboarding_page_indicator">%1$d / %2$d</string>
+    <string name="onboarding_find_doctor_title">Найдите нужного доктора</string>
+    <string name="onboarding_find_doctor_description">Отсортируйте врачей по специализации, языкам, стоимости и свободному времени.</string>
+    <string name="onboarding_schedule_appointment_title">Запишитесь без звонков</string>
+    <string name="onboarding_schedule_appointment_description">Выберите клинику, дату и удобное время прямо в приложении.</string>
+    <string name="onboarding_reminder_title">Напомним о важном</string>
+    <string name="onboarding_reminder_description">Включите уведомления — так мы сможем напомнить вам о предстоящем визите или о готовых анализах. Обещаем не беспокоить по пустякам.</string>
+    <string name="continue_action">Продолжить</string>
+    <string name="skip">Пропустить</string>
+    <string name="enable_notifications">Включить уведомления</string>
+    <string name="decline">Отказаться</string>
+</resources>

@@ -1,36 +1,48 @@
 package ui.content
 
 import androidx.compose.runtime.Immutable
+import org.jetbrains.compose.resources.StringResource
 import ui.content.OnboardingData.FindDoctor
 import ui.content.OnboardingData.ReminderAndResults
 import ui.content.OnboardingData.ScheduleAppointment
+import unowarder01.healthier.designsystem.generated.resources.Res
+import unowarder01.healthier.designsystem.generated.resources.continue_action
+import unowarder01.healthier.designsystem.generated.resources.decline
+import unowarder01.healthier.designsystem.generated.resources.enable_notifications
+import unowarder01.healthier.designsystem.generated.resources.onboarding_find_doctor_description
+import unowarder01.healthier.designsystem.generated.resources.onboarding_find_doctor_title
+import unowarder01.healthier.designsystem.generated.resources.onboarding_reminder_description
+import unowarder01.healthier.designsystem.generated.resources.onboarding_reminder_title
+import unowarder01.healthier.designsystem.generated.resources.onboarding_schedule_appointment_description
+import unowarder01.healthier.designsystem.generated.resources.onboarding_schedule_appointment_title
+import unowarder01.healthier.designsystem.generated.resources.skip
 
 @Immutable
 sealed class OnboardingData(
-    open val title: String,
-    open val description: String,
-    open val positiveButtonText: String,
-    open val negativeButtonText: String,
+    open val title: StringResource,
+    open val description: StringResource,
+    open val positiveButtonText: StringResource,
+    open val negativeButtonText: StringResource,
 ) {
     data object FindDoctor: OnboardingData(
-        title = "Найдите нужного доктора",
-        description = "Отсортируйте врачей по специализации, языкам, стоимости и свободному времени.",
-        positiveButtonText = "Продолжить",
-        negativeButtonText = "Пропустить"
+        title = Res.string.onboarding_find_doctor_title,
+        description = Res.string.onboarding_find_doctor_description,
+        positiveButtonText = Res.string.continue_action,
+        negativeButtonText = Res.string.skip
     )
 
     data object ScheduleAppointment: OnboardingData(
-        title = "Запишитесь без звонков",
-        description = "Выберите клинику, дату и удобное время прямо в приложении.",
-        positiveButtonText = "Продолжить",
-        negativeButtonText = "Пропустить"
+        title = Res.string.onboarding_schedule_appointment_title,
+        description = Res.string.onboarding_schedule_appointment_description,
+        positiveButtonText = Res.string.continue_action,
+        negativeButtonText = Res.string.skip
     )
 
     data object ReminderAndResults: OnboardingData(
-        title = "Напомним о важном",
-        description = "Включите уведомления - так мы сможем напомнить вам о предстоящем визите или о готовых анализах. Обещаем не беспокоить по пустякам.",
-        positiveButtonText = "Включить уведомления",
-        negativeButtonText = "Отказаться"
+        title = Res.string.onboarding_reminder_title,
+        description = Res.string.onboarding_reminder_description,
+        positiveButtonText = Res.string.enable_notifications,
+        negativeButtonText = Res.string.decline
     )
 }
 
