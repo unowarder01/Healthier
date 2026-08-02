@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,7 +32,6 @@ import unowarder01.healthier.designsystem.generated.resources.Res
 import unowarder01.healthier.designsystem.generated.resources.ic_apple
 import unowarder01.healthier.designsystem.generated.resources.ic_google
 import unowarder01.healthier.designsystem.generated.resources.ic_meta
-import unowarder01.healthier.designsystem.generated.resources.ic_protected
 import unowarder01.healthier.designsystem.generated.resources.ic_telegram
 import unowarder01.healthier.designsystem.generated.resources.terms_and_privacy_agreement
 import unowarder01.healthier.features.auth.ui.AuthContract.Listener
@@ -56,7 +54,6 @@ fun AuthMainScreen(
         AppLogo()
         Spacer(modifier = Modifier.weight(1f))
         Title()
-        YourDataProtected()
         Spacer(modifier = Modifier.weight(1f))
         AuthButtons()
         AgreementText()
@@ -89,45 +86,6 @@ private fun Title() {
 }
 
 /**
- * YOUR DATA PROTECTED
- */
-@Composable
-private fun YourDataProtected() {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-            .fillMaxWidth()
-            .clip(shapes.extraLarge)
-            .background(
-                color = Color(0xFFF0F1F6),
-                shape = shapes.extraLarge
-            )
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-    ) {
-        AppImage(
-            image = Res.drawable.ic_protected,
-            modifier = Modifier.size(27.dp)
-        )
-        Column(
-            modifier = Modifier.padding(start = 16.dp)
-        ) {
-            Text(
-                text = "Ваши данные защищены",
-                color = Color(0xFF17171B),
-                style = typography.labelLarge.copy(fontWeight = FontWeight.Bold),
-            )
-            Text(
-                text = "Данные хранятся в зашифрованном виде, а ключи шифрования - локально на вашем устройстве.",
-                color = Color(0xFF626272),
-                style = typography.labelMedium,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
-    }
-}
-
-/**
  * BUTTONS
  */
 @Composable
@@ -155,7 +113,7 @@ private fun AuthButton(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
+            .height(56.dp)
             .clip(shapes.large)
             .background(
                 color = Color(0xFFFFFFFF),
@@ -172,12 +130,12 @@ private fun AuthButton(
             modifier = Modifier
                 .padding(start = 16.dp)
                 .align(Alignment.CenterStart)
-                .size(25.dp)
+                .size(28.dp)
         )
         Text(
             text = text,
             color = Color(0xFF17171B),
-            style = typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+            style = typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
             modifier = Modifier.align(Alignment.Center)
         )
     }
