@@ -12,6 +12,6 @@ fun ProfileMainScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Red)
+            .background(Color.Black)
     )
 }

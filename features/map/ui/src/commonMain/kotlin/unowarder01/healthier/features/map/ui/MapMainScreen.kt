@@ -12,6 +12,6 @@ fun MapMainScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Red)
+            .background(Color.Green)
     )
 }

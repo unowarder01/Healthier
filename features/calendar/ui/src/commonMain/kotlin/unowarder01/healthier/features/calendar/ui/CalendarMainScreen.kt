@@ -12,6 +12,6 @@ fun CalendarMainScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Red)
+            .background(Color.Blue)
     )
 }
