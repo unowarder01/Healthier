@@ -19,6 +19,10 @@ import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreen
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensChild.CityChild
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensChild.OnboardingChild
 import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensChild.SplashChild
+import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig.AuthConfig
+import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig.CityConfig
+import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig.OnboardingConfig
+import unowarder01.healthier.navigation.screens.start.root_navigator.StartScreensConfig.SplashConfig
 
 class StartScreensNavigatorImpl(
     context: ComponentContext,
@@ -32,7 +36,7 @@ class StartScreensNavigatorImpl(
         key = "StartScreensNavigator",
         source = navigation,
         serializer = null,
-        initialConfiguration = StartScreensConfig.SplashConfig,
+        initialConfiguration = SplashConfig,
         handleBackButton = true,
         childFactory = ::createChild
     )
@@ -41,10 +45,10 @@ class StartScreensNavigatorImpl(
      * CHILDREN
      */
     private fun createChild(config: StartScreensConfig, context: ComponentContext) = when (config) {
-        is StartScreensConfig.SplashConfig -> buildSplashChild(context)
-        is StartScreensConfig.OnboardingConfig -> buildOnboardingChild(context)
-        is StartScreensConfig.AuthConfig -> buildAuthChild(context)
-        is StartScreensConfig.CityConfig -> buildCityChild(context)
+        is SplashConfig -> buildSplashChild(context)
+        is OnboardingConfig -> buildOnboardingChild(context)
+        is AuthConfig -> buildAuthChild(context)
+        is CityConfig -> buildCityChild(context)
     }
 
     /**
