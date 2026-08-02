@@ -53,3 +53,12 @@ include(
     ":features:city:ui",
     ":features:city:composition",
 )
+
+listOf("health", "map", "calendar", "profile").forEach { feature ->
+    include(
+        ":features:$feature:data",
+        ":features:$feature:domain",
+        ":features:$feature:ui",
+        ":features:$feature:composition",
+    )
+}
