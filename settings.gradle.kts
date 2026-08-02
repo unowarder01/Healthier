@@ -46,3 +46,10 @@ listOf("splash", "auth", "onboarding").forEach { feature ->
         ":features:$feature:composition",
     )
 }
+
+include(
+    ":features:city:data",
+    ":features:city:domain",
+    ":features:city:ui",
+    ":features:city:composition",
+)

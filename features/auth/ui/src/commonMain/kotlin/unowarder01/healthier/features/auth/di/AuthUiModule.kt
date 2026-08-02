@@ -3,6 +3,7 @@ package unowarder01.healthier.features.auth.di
 import com.arkivanov.decompose.ComponentContext
 import org.koin.dsl.module
 import unowarder01.healthier.features.auth.ui.AuthComponent
+import unowarder01.healthier.features.auth.ui.AuthNavigator
 import unowarder01.healthier.features.auth.ui.AuthViewModel
 
 val authUiModule = module {
@@ -10,7 +11,8 @@ val authUiModule = module {
     factory { (context: ComponentContext) ->
         AuthComponent(
             context = context,
-            viewModel = get()
+            viewModel = get(),
+            navigator = get<AuthNavigator>(),
         )
     }
 }

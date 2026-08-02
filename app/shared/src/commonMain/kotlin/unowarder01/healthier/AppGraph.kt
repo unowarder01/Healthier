@@ -6,6 +6,7 @@ import org.koin.core.Koin
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.koinApplication
 import unowarder01.healthier.features.auth.di.authFeatureModule
+import unowarder01.healthier.features.city.di.cityFeatureModule
 import unowarder01.healthier.features.splash.di.splashFeatureModule
 import unowarder01.healthier.navigation.screens.AppScreensNavigator
 import unowarder01.healthier.navigation.appNavigationModule
@@ -16,6 +17,7 @@ class AppGraph {
             splashFeatureModule,
             onboardingFeatureModule,
             authFeatureModule,
+            cityFeatureModule,
             appNavigationModule
         )
     }

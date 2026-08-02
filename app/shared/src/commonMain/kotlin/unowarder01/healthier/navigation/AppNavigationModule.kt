@@ -6,6 +6,8 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 import ui.OnboardingNavigator
+import unowarder01.healthier.features.auth.ui.AuthNavigator
+import unowarder01.healthier.features.city.ui.CityNavigator
 import unowarder01.healthier.features.splash.ui.SplashNavigator
 import unowarder01.healthier.navigation.screens.AppScreensConfig
 import unowarder01.healthier.navigation.screens.AppScreensNavigator
@@ -22,4 +24,6 @@ val appNavigationModule = module {
     }
     factoryOf(::SplashNavigatorImpl) { bind<SplashNavigator>() }
     factoryOf(::OnboardingNavigatorImpl) { bind<OnboardingNavigator>() }
+    factoryOf(::AuthNavigatorImpl) { bind<AuthNavigator>() }
+    factoryOf(::CityNavigatorImpl) { bind<CityNavigator>() }
 }

@@ -13,12 +13,16 @@ import ui.OnboardingComponent
 import ui.OnboardingMainScreen
 import unowarder01.healthier.features.auth.ui.AuthComponent
 import unowarder01.healthier.features.auth.ui.AuthMainScreen
+import unowarder01.healthier.features.city.ui.CityComponent
+import unowarder01.healthier.features.city.ui.CityMainScreen
 import unowarder01.healthier.features.splash.ui.SplashComponent
 import unowarder01.healthier.features.splash.ui.SplashMainScreen
 import unowarder01.healthier.navigation.screens.AppScreensChild.AuthChild
+import unowarder01.healthier.navigation.screens.AppScreensChild.CityChild
 import unowarder01.healthier.navigation.screens.AppScreensChild.OnboardingChild
 import unowarder01.healthier.navigation.screens.AppScreensChild.SplashChild
 import unowarder01.healthier.navigation.screens.AppScreensConfig.AuthConfig
+import unowarder01.healthier.navigation.screens.AppScreensConfig.CityConfig
 import unowarder01.healthier.navigation.screens.AppScreensConfig.OnboardingConfig
 import unowarder01.healthier.navigation.screens.AppScreensConfig.SplashConfig
 
@@ -50,6 +54,7 @@ class AppScreensNavigatorImpl(
         SplashConfig -> SplashChild(koin.get<SplashComponent> { parametersOf(context) })
         OnboardingConfig -> OnboardingChild(koin.get<OnboardingComponent> { parametersOf(context) })
         AuthConfig -> AuthChild(koin.get<AuthComponent> { parametersOf(context) })
+        CityConfig -> CityChild(koin.get<CityComponent> { parametersOf(context) })
     }
 
     @Composable
@@ -75,6 +80,10 @@ class AppScreensNavigatorImpl(
                     state = state,
                     listener = child.component
                 )
+            }
+            is CityChild -> {
+                child.component.subscribeState()
+                CityMainScreen()
             }
         }
     }
