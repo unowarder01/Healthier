@@ -36,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
@@ -50,6 +51,8 @@ import unowarder01.healthier.designsystem.generated.resources.ic_search
 import unowarder01.healthier.features.city.ui.CityContract.Listener
 import unowarder01.healthier.features.city.ui.CityContract.State
 import unowarder01.healthier.features.city.ui.data.CityUi
+import unowarder01.healthier.features.city.ui.data.CityUi.ReadyCityUi
+import unowarder01.healthier.features.city.ui.data.CityUi.SoonCityUi
 
 @Composable
 fun CityMainScreen(
@@ -197,6 +200,7 @@ private fun City(
                 shape = shapes.large
             )
             .clickable(
+                enabled = city is ReadyCityUi,
                 role = Role.Button,
                 onClick = onClick
             )
@@ -229,20 +233,37 @@ private fun City(
                 color = colorScheme.primary,
                 style = typography.titleSmall.copy(fontWeight = FontWeight.Bold)
             )
+            if (city is ReadyCityUi) {
+                Text(
+                    text = "${city.doctorsCount} докторов - ${city.clinicsCount} клиник",
+                    color = colorScheme.onSurfaceVariant,
+                    style = typography.labelSmall,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
+        }
+        if (city is SoonCityUi) {
             Text(
-                text = "${city.doctorsCount} докторов - ${city.clinicsCount} клиник",
-                color = colorScheme.onSurfaceVariant,
+                text = "Soon",
                 style = typography.labelSmall,
-                modifier = Modifier.padding(top = 4.dp)
+                color = colorScheme.onSecondary,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .clip(shapes.small)
+                    .background(
+                        color = colorScheme.secondary,
+                        shape = shapes.small
+                    )
+                    .padding(horizontal = 8.dp, vertical = 6.dp)
+            )
+        } else {
+            Spacer(modifier = Modifier.weight(1f))
+            AppImage(
+                image = Res.drawable.ic_arrow_right,
+                color = colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(12.dp)
             )
         }
-        Spacer(
-            modifier = Modifier.weight(1f)
-        )
-        AppImage(
-            image = Res.drawable.ic_arrow_right,
-            color = colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(12.dp)
-        )
     }
 }

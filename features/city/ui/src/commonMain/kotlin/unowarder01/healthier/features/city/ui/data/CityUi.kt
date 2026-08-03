@@ -1,14 +1,18 @@
 package unowarder01.healthier.features.city.ui.data
 
-data class CityUi(
-    val id: Int,
-    val name: String,
-    val doctorsCount: Int,
-    val clinicsCount: Int,
-    val status: CityUiStatus
-)
+sealed class CityUi(
+    open val id: Int,
+    open val name: String
+) {
+    data class ReadyCityUi(
+        override val id: Int,
+        override val name: String,
+        val doctorsCount: Int,
+        val clinicsCount: Int
+    ): CityUi(id, name)
 
-enum class CityUiStatus {
-    READY,
-    SOON
+    data class SoonCityUi(
+        override val id: Int,
+        override val name: String
+    ): CityUi(id, name)
 }
