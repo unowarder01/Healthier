@@ -37,7 +37,7 @@ fun <T> ContainerWithIndicator(
     onItemClick: (itemIndex: Int) -> Unit,
     itemContent: @Composable BoxScope.(index: Int, item: T) -> Unit,
     withShadow: Boolean = false,
-    containerBackgroundColor: Color = colorScheme.onPrimary,
+    containerBackgroundColor: Color = colorScheme.surface,
     indicatorPadding: Dp = 0.dp
 ) {
     val density = LocalDensity.current

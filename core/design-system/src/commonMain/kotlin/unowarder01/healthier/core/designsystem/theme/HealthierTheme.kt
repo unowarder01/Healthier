@@ -16,65 +16,83 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 private val HealthierLightColorScheme = lightColorScheme(
-    primary = Color(0xFF17171B),
+    primary = Color(0xFF171A1F),
     onPrimary = Color(0xFFFFFFFF),
-    primaryContainer = Color(0xFFF0F1F6),
-    onPrimaryContainer = Color(0xFF17171B),
-    secondary = Color(0xFF1264D2),
+    primaryContainer = Color(0xFFF2F4F7),
+    onPrimaryContainer = Color(0xFF171A1F),
+
+    secondary = Color(0xFF0F5AC7),
     onSecondary = Color(0xFFFFFFFF),
-    secondaryContainer = Color(0xFFE8F2FF),
-    onSecondaryContainer = Color(0xFF123A63),
+    secondaryContainer = Color(0xFFEAF2FF),
+    onSecondaryContainer = Color(0xFF0B3A78),
+
     tertiary = Color(0xFF168A68),
     onTertiary = Color(0xFFFFFFFF),
-    tertiaryContainer = Color(0xFFD8F3E9),
+    tertiaryContainer = Color(0xFFDDF5EC),
     onTertiaryContainer = Color(0xFF074E3B),
+
     error = Color(0xFFD92D20),
     onError = Color(0xFFFFFFFF),
     errorContainer = Color(0xFFFEE4E2),
     onErrorContainer = Color(0xFF7A271A),
-    background = Color(0xFFF7F7FA),
-    onBackground = Color(0xFF17171B),
+
+    background = Color(0xFFFCFCFD),
+    onBackground = Color(0xFF171A1F),
+
     surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF17171B),
-    surfaceVariant = Color(0xFFF0F1F6),
-    onSurfaceVariant = Color(0xFF626272),
-    outline = Color(0xFFD2D4DE),
-    outlineVariant = Color(0xFFE1E2E9),
-    inverseSurface = Color(0xFF17171B),
-    inverseOnSurface = Color(0xFFFFFFFF),
-    inversePrimary = Color(0xFF79B8FF),
-    scrim = Color(0xFF17171B),
+    onSurface = Color(0xFF171A1F),
+
+    surfaceVariant = Color(0xFFF6F7F9),
+    onSurfaceVariant = Color(0xFF667085),
+
+    outline = Color(0xFFD9DDE3),
+    outlineVariant = Color(0xFFE7E9ED),
+
+    inverseSurface = Color(0xFF1E2B3F),
+    inverseOnSurface = Color(0xFFF7F9FC),
+    inversePrimary = Color(0xFF58A6FF),
+
+    scrim = Color(0xFF0F1724),
     surfaceTint = Color.Transparent
 )
 
 private val HealthierDarkColorScheme = darkColorScheme(
-    primary = Color(0xFFF7F7FA),
-    onPrimary = Color(0xFF17171B),
-    primaryContainer = Color(0xFF2A2A32),
-    onPrimaryContainer = Color(0xFFF7F7FA),
-    secondary = Color(0xFF79B8FF),
-    onSecondary = Color(0xFF17171B),
-    secondaryContainer = Color(0xFF173A5E),
-    onSecondaryContainer = Color(0xFFD8EAFF),
-    tertiary = Color(0xFF49B990),
+    primary = Color(0xFFF7F9FC),
+    onPrimary = Color(0xFF151E2D),
+    primaryContainer = Color(0xFF25364D),
+    onPrimaryContainer = Color(0xFFF7F9FC),
+
+    secondary = Color(0xFF58A6FF),
+    onSecondary = Color(0xFF071A2E),
+    secondaryContainer = Color(0xFF203F67),
+    onSecondaryContainer = Color(0xFFD9EAFF),
+
+    tertiary = Color(0xFF5EC49B),
     onTertiary = Color(0xFF062F25),
-    tertiaryContainer = Color(0xFF0F5F48),
-    onTertiaryContainer = Color(0xFFD8F3E9),
+    tertiaryContainer = Color(0xFF164F40),
+    onTertiaryContainer = Color(0xFFDDF5EC),
+
     error = Color(0xFFFFB4AB),
     onError = Color(0xFF690005),
     errorContainer = Color(0xFF93000A),
     onErrorContainer = Color(0xFFFFDAD6),
-    background = Color(0xFF0E0E12),
-    onBackground = Color(0xFFF7F7FA),
-    surface = Color(0xFF18181E),
-    onSurface = Color(0xFFF7F7FA),
-    surfaceVariant = Color(0xFF22222A),
-    onSurfaceVariant = Color(0xFFB8B8C4),
-    outline = Color(0xFF393943),
-    outlineVariant = Color(0xFF2A2A32),
-    inverseSurface = Color(0xFFF7F7FA),
-    inverseOnSurface = Color(0xFF17171B),
-    inversePrimary = Color(0xFF1264D2),
+
+    background = Color(0xFF151E2D),
+    onBackground = Color(0xFFF7F9FC),
+
+    surface = Color(0xFF1E2B3F),
+    onSurface = Color(0xFFF7F9FC),
+
+    surfaceVariant = Color(0xFF242F3F),
+    onSurfaceVariant = Color(0xFFAAB6C7),
+
+    outline = Color(0xFF34465A),
+    outlineVariant = Color(0xFF29394B),
+
+    inverseSurface = Color(0xFFF7F9FC),
+    inverseOnSurface = Color(0xFF151E2D),
+    inversePrimary = Color(0xFF0F5AC7),
+
     scrim = Color(0xFF000000),
     surfaceTint = Color.Transparent
 )

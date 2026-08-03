@@ -40,7 +40,7 @@ class StartScreensNavigatorImpl(
         key = "StartScreensNavigator",
         source = navigation,
         serializer = StartScreensConfig.serializer(),
-        initialConfiguration = SplashConfig,
+        initialConfiguration = MainConfig,
         handleBackButton = true,
         childFactory = ::createChild
     )
