@@ -117,8 +117,11 @@ class StartScreensNavigatorImpl(
 
     @Composable
     private fun CityContent(child: CityChild) {
-        child.component.subscribeState()
-        CityMainScreen(listener = child.component)
+        val state by child.component.subscribeState()
+        CityMainScreen(
+            state = state,
+            listener = child.component
+        )
     }
 
     /**

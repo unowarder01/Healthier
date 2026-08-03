@@ -1,11 +1,13 @@
 <resources>
     <string name="app_language">App language</string>
+    <!-- AUTH -->
     <string name="authorization">Authorization</string>
     <string name="continue_with_apple">Continue with Apple</string>
     <string name="continue_with_google">Continue with Google</string>
     <string name="continue_with_meta">Continue with Meta</string>
     <string name="continue_with_telegram">Continue with Telegram</string>
     <string name="terms_and_privacy_agreement">By continuing, you agree to the &lt;terms&gt;Terms of Use&lt;/terms&gt; and &lt;privacy&gt;Privacy Policy&lt;/privacy&gt;</string>
+    <!-- ONBOARDING -->
     <string name="onboarding_page_indicator">%1$d / %2$d</string>
     <string name="onboarding_find_doctor_title">Find the right doctor</string>
     <string name="onboarding_find_doctor_description">Filter doctors by specialty, languages, price, and availability.</string>
@@ -17,8 +19,12 @@
     <string name="skip">Skip</string>
     <string name="enable_notifications">Enable notifications</string>
     <string name="decline">Decline</string>
+    <!-- MAIN TABS -->
     <string name="health">Health</string>
     <string name="map">Map</string>
     <string name="calendar">Calendar</string>
     <string name="profile">Profile</string>
+    <!-- CITY -->
+    <string name="popular">Popular</string>
+    <string name="other">Others</string>
 </resources>

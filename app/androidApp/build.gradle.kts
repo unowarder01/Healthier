@@ -17,6 +17,8 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.splash.screen)
     implementation(libs.androidx.concurrent.futures)
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
     implementation(libs.decompose)
     implementation(libs.kmpnotifier)
 

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -36,6 +37,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 import unowarder01.healthier.core.designsystem.components.image.AppImage
 import unowarder01.healthier.core.designsystem.components.text_field.AppTextField
 import unowarder01.healthier.core.designsystem.extensions.clearFocusOnTap
@@ -45,9 +48,14 @@ import unowarder01.healthier.designsystem.generated.resources.ic_arrow_right
 import unowarder01.healthier.designsystem.generated.resources.ic_location_pin
 import unowarder01.healthier.designsystem.generated.resources.ic_search
 import unowarder01.healthier.features.city.ui.CityContract.Listener
+import unowarder01.healthier.features.city.ui.CityContract.State
+import unowarder01.healthier.features.city.ui.data.CityUi
 
 @Composable
-fun CityMainScreen(listener: Listener) {
+fun CityMainScreen(
+    state: State,
+    listener: Listener
+) {
     val listState = rememberLazyListState()
     val showHeaderShadow by remember {
         derivedStateOf { listState.canScrollBackward }
@@ -64,7 +72,11 @@ fun CityMainScreen(listener: Listener) {
         stickyHeader {
             TitleAndSearchHeader(showShadow = showHeaderShadow)
         }
-        cities(onCityClick = listener::onCityClick)
+        cities(
+            state = state,
+            listener = listener
+        )
+        item { Spacer(modifier = Modifier.height(16.dp)) }
     }
 }
 
@@ -136,39 +148,42 @@ private fun Search() {
  * HEADER
  */
 @Composable
-private fun Header(modifier: Modifier = Modifier) {
+private fun Header(text: StringResource) {
     Text(
-        text = "Популярные".uppercase(),
+        text = stringResource(text).uppercase(),
         color = colorScheme.onSurfaceVariant,
         style = typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-        modifier = modifier.padding(horizontal = 16.dp)
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp)
     )
 }
 
 /**
  * CITIES
  */
-private fun LazyListScope.cities(onCityClick: () -> Unit) {
-    item { Header(modifier = Modifier.padding(top = 8.dp)) }
-    item { Spacer(modifier = Modifier.padding(top = 8.dp)) }
-    items(3) {
-        City(onClick = onCityClick)
-        Spacer(modifier = Modifier.padding(top = 8.dp))
-    }
-    item { Header(modifier = Modifier.padding(top = 16.dp)) }
-    item { Spacer(modifier = Modifier.padding(top = 8.dp)) }
-    items(12) {
-        City(onClick = onCityClick)
-        Spacer(modifier = Modifier.padding(top = 8.dp))
+private fun LazyListScope.cities(
+    state: State,
+    listener: Listener
+) {
+    state.citiesUi.forEach { cityData ->
+        item { Header(cityData.header) }
+        items(cityData.items) { city ->
+            City(
+                city = city,
+                onClick = { listener.onCityClick() }
+            )
+        }
     }
 }
 
 @Composable
-private fun City(onClick: () -> Unit) {
+private fun City(
+    city: CityUi,
+    onClick: () -> Unit
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp)
             .fillMaxWidth()
             .height(74.dp)
             .clip(shapes.large)
@@ -210,12 +225,12 @@ private fun City(onClick: () -> Unit) {
                 .fillMaxHeight()
         ) {
             Text(
-                text = "Тбилиси",
+                text = city.name,
                 color = colorScheme.primary,
                 style = typography.titleSmall.copy(fontWeight = FontWeight.Bold)
             )
             Text(
-                text = "312 врачей · 28 клиник",
+                text = "${city.doctorsCount} докторов - ${city.clinicsCount} клиник",
                 color = colorScheme.onSurfaceVariant,
                 style = typography.labelSmall,
                 modifier = Modifier.padding(top = 4.dp)

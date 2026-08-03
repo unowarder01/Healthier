@@ -62,3 +62,4 @@ listOf("health", "map", "calendar", "profile").forEach { feature ->
         ":features:$feature:composition",
     )
 }
+include(":core:network")
