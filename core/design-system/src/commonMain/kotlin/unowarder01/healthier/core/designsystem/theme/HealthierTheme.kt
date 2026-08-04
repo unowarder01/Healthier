@@ -8,6 +8,8 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -212,15 +214,24 @@ private val HealthierShapes = Shapes(
     extraLarge = RoundedCornerShape(32.dp)
 )
 
+private val LocalHealthierDarkTheme = staticCompositionLocalOf<Boolean?> { null }
+
 @Composable
 fun HealthierTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    MaterialTheme(
-        colorScheme = if (darkTheme) HealthierDarkColorScheme else HealthierLightColorScheme,
-        typography = HealthierTypography,
-        shapes = HealthierShapes,
-        content = content
+    val parentDarkTheme = LocalHealthierDarkTheme.current
+    SystemBarsAppearance(
+        darkTheme = darkTheme,
+        restoreDarkTheme = parentDarkTheme
     )
+    CompositionLocalProvider(LocalHealthierDarkTheme provides darkTheme) {
+        MaterialTheme(
+            colorScheme = if (darkTheme) HealthierDarkColorScheme else HealthierLightColorScheme,
+            typography = HealthierTypography,
+            shapes = HealthierShapes,
+            content = content
+        )
+    }
 }

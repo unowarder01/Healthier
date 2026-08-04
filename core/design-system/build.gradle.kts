@@ -3,6 +3,9 @@ plugins {
 }
 
 kotlin {
+    sourceSets.androidMain.dependencies {
+        implementation(libs.androidx.core.ktx)
+    }
     sourceSets.commonMain.dependencies {
         api(project(":core:common"))
         api(libs.compose.runtime)
