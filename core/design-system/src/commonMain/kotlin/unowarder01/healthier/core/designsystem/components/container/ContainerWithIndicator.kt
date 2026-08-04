@@ -56,7 +56,11 @@ fun <T> ContainerWithIndicator(
     Box(
         modifier = modifier
             .run {
-                if (!withShadow) this else outerShadow(shape = shapes.extraLarge)
+                if (!withShadow) this else outerShadow(
+                    radius = 10.dp,
+                    spread = 2.dp,
+                    shape = shapes.extraLarge
+                )
             }
             .clip(shapes.extraLarge)
             .background(

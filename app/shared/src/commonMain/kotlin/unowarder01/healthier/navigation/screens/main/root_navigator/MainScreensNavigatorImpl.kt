@@ -23,6 +23,7 @@ import unowarder01.healthier.navigation.screens.main.root_navigator.MainScreensC
 import unowarder01.healthier.navigation.screens.main.root_navigator.MainScreensConfig.CalendarConfig
 import unowarder01.healthier.navigation.screens.main.root_navigator.MainScreensConfig.HealthConfig
 import unowarder01.healthier.navigation.screens.main.root_navigator.MainScreensConfig.MapConfig
+import unowarder01.healthier.navigation.screens.main.root_navigator.MainScreensConfig.MedicalCardConfig
 import unowarder01.healthier.navigation.screens.main.root_navigator.MainScreensConfig.ProfileConfig
 
 class MainScreensNavigatorImpl(
@@ -55,6 +56,7 @@ class MainScreensNavigatorImpl(
         is HealthConfig -> buildHealthChild(context)
         is MapConfig -> buildMapChild(context)
         is CalendarConfig -> buildCalendarChild(context)
+        is MedicalCardConfig -> buildCalendarChild(context) // TODO: Add new feature module
         is ProfileConfig -> buildProfileChild(context)
     }
 

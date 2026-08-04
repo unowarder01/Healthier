@@ -25,6 +25,8 @@ import unowarder01.healthier.designsystem.generated.resources.ic_tab_calendar_se
 import unowarder01.healthier.designsystem.generated.resources.ic_tab_calendar_unselected
 import unowarder01.healthier.designsystem.generated.resources.ic_tab_health_selected
 import unowarder01.healthier.designsystem.generated.resources.ic_tab_health_unselected
+import unowarder01.healthier.designsystem.generated.resources.ic_tab_history_selected
+import unowarder01.healthier.designsystem.generated.resources.ic_tab_history_unselected
 import unowarder01.healthier.designsystem.generated.resources.ic_tab_map_selected
 import unowarder01.healthier.designsystem.generated.resources.ic_tab_map_unselected
 import unowarder01.healthier.designsystem.generated.resources.ic_tab_profile_selected
@@ -104,6 +106,10 @@ private val mainBottomNavigationItems = listOf(
     MainBottomNavigationItemModel(
         selectedIcon = Res.drawable.ic_tab_calendar_selected,
         unselectedIcon = Res.drawable.ic_tab_calendar_unselected
+    ),
+    MainBottomNavigationItemModel(
+        selectedIcon = Res.drawable.ic_tab_history_selected,
+        unselectedIcon = Res.drawable.ic_tab_history_unselected
     ),
     MainBottomNavigationItemModel(
         selectedIcon = Res.drawable.ic_tab_profile_selected,
