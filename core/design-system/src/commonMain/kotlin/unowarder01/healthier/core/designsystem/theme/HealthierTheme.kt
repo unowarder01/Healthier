@@ -16,15 +16,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 private val HealthierLightColorScheme = lightColorScheme(
-    primary = Color(0xFF171A1F),
+    primary = Color(0xFF0F5AC7),
     onPrimary = Color(0xFFFFFFFF),
-    primaryContainer = Color(0xFFF2F4F7),
-    onPrimaryContainer = Color(0xFF171A1F),
+    primaryContainer = Color(0xFFEAF2FF),
+    onPrimaryContainer = Color(0xFF0B3A78),
 
-    secondary = Color(0xFF0F5AC7),
+    secondary = Color(0xFF667085),
     onSecondary = Color(0xFFFFFFFF),
-    secondaryContainer = Color(0xFFEAF2FF),
-    onSecondaryContainer = Color(0xFF0B3A78),
+    secondaryContainer = Color(0xFFF2F4F7),
+    onSecondaryContainer = Color(0xFF171A1F),
 
     tertiary = Color(0xFF168A68),
     onTertiary = Color(0xFFFFFFFF),
@@ -42,8 +42,17 @@ private val HealthierLightColorScheme = lightColorScheme(
     surface = Color(0xFFFFFFFF),
     onSurface = Color(0xFF171A1F),
 
-    surfaceVariant = Color(0xFFF6F7F9),
+    surfaceVariant = Color(0xFFF2F4F7),
     onSurfaceVariant = Color(0xFF667085),
+
+    surfaceBright = Color(0xFFFFFFFF),
+    surfaceDim = Color(0xFFF2F4F7),
+
+    surfaceContainerLowest = Color(0xFFFFFFFF),
+    surfaceContainerLow = Color(0xFFFCFCFD),
+    surfaceContainer = Color(0xFFF6F7F9),
+    surfaceContainerHigh = Color(0xFFF2F4F7),
+    surfaceContainerHighest = Color(0xFFE7E9ED),
 
     outline = Color(0xFFD9DDE3),
     outlineVariant = Color(0xFFE7E9ED),
@@ -53,19 +62,19 @@ private val HealthierLightColorScheme = lightColorScheme(
     inversePrimary = Color(0xFF58A6FF),
 
     scrim = Color(0xFF0F1724),
-    surfaceTint = Color.Transparent
+    surfaceTint = Color(0xFF0F5AC7)
 )
 
 private val HealthierDarkColorScheme = darkColorScheme(
-    primary = Color(0xFFF7F9FC),
-    onPrimary = Color(0xFF151E2D),
-    primaryContainer = Color(0xFF25364D),
-    onPrimaryContainer = Color(0xFFF7F9FC),
+    primary = Color(0xFF58A6FF),
+    onPrimary = Color(0xFF071A2E),
+    primaryContainer = Color(0xFF203F67),
+    onPrimaryContainer = Color(0xFFD9EAFF),
 
-    secondary = Color(0xFF58A6FF),
-    onSecondary = Color(0xFF071A2E),
-    secondaryContainer = Color(0xFF203F67),
-    onSecondaryContainer = Color(0xFFD9EAFF),
+    secondary = Color(0xFFAAB6C7),
+    onSecondary = Color(0xFF151E2D),
+    secondaryContainer = Color(0xFF25364D),
+    onSecondaryContainer = Color(0xFFF7F9FC),
 
     tertiary = Color(0xFF5EC49B),
     onTertiary = Color(0xFF062F25),
@@ -83,8 +92,17 @@ private val HealthierDarkColorScheme = darkColorScheme(
     surface = Color(0xFF1E2B3F),
     onSurface = Color(0xFFF7F9FC),
 
-    surfaceVariant = Color(0xFF242F3F),
+    surfaceVariant = Color(0xFF25364D),
     onSurfaceVariant = Color(0xFFAAB6C7),
+
+    surfaceBright = Color(0xFF25364D),
+    surfaceDim = Color(0xFF151E2D),
+
+    surfaceContainerLowest = Color(0xFF151E2D),
+    surfaceContainerLow = Color(0xFF1E2B3F),
+    surfaceContainer = Color(0xFF242F3F),
+    surfaceContainerHigh = Color(0xFF25364D),
+    surfaceContainerHighest = Color(0xFF34465A),
 
     outline = Color(0xFF34465A),
     outlineVariant = Color(0xFF29394B),
@@ -94,7 +112,7 @@ private val HealthierDarkColorScheme = darkColorScheme(
     inversePrimary = Color(0xFF0F5AC7),
 
     scrim = Color(0xFF000000),
-    surfaceTint = Color.Transparent
+    surfaceTint = Color(0xFF58A6FF)
 )
 
 private val HealthierTypography = Typography(

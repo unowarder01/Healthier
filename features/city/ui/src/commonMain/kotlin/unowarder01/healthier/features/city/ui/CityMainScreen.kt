@@ -94,7 +94,7 @@ private fun TitleAndSearchHeader(showShadow: Boolean) {
     val shadowColor by animateColorAsState(
         animationSpec = tween(),
         targetValue = if (showShadow) {
-            colorScheme.primary.copy(alpha = 0.1f)
+            colorScheme.scrim.copy(alpha = 0.1f)
         } else {
             Color.Transparent
         },
@@ -127,7 +127,7 @@ private fun TitleAndSearchHeader(showShadow: Boolean) {
 private fun Title() {
     Text(
         text = "Выберите Ваш город",
-        color = colorScheme.primary,
+        color = colorScheme.onBackground,
         style = typography.displaySmall,
         modifier = Modifier.padding(top = 16.dp)
     )
@@ -191,7 +191,7 @@ private fun City(
             .height(74.dp)
             .clip(shapes.large)
             .background(
-                color = colorScheme.onPrimary,
+                color = colorScheme.surface,
                 shape = shapes.large
             )
             .border(
@@ -218,7 +218,7 @@ private fun City(
         ) {
             AppImage(
                 image = Res.drawable.ic_location_pin,
-                color = colorScheme.primary,
+                color = colorScheme.onPrimaryContainer,
                 modifier = Modifier.size(20.dp)
             )
         }
@@ -230,7 +230,7 @@ private fun City(
         ) {
             Text(
                 text = city.name,
-                color = colorScheme.primary,
+                color = colorScheme.onSurface,
                 style = typography.titleSmall.copy(fontWeight = FontWeight.Bold)
             )
             if (city is ReadyCityUi) {
@@ -246,13 +246,13 @@ private fun City(
             Text(
                 text = "Soon",
                 style = typography.labelSmall,
-                color = colorScheme.onSecondary,
+                color = colorScheme.onSecondaryContainer,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(start = 12.dp)
                     .clip(shapes.small)
                     .background(
-                        color = colorScheme.secondary,
+                        color = colorScheme.secondaryContainer,
                         shape = shapes.small
                     )
                     .padding(horizontal = 8.dp, vertical = 6.dp)

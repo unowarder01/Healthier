@@ -45,7 +45,7 @@ fun Modifier.clearFocusOnTap(): Modifier {
 @Composable
 fun Modifier.outerShadow(
     shape: Shape,
-    color: Color = colorScheme.primary.copy(alpha = 0.1f),
+    color: Color = colorScheme.scrim.copy(alpha = 0.1f),
     radius: Dp = 8.dp,
     spread: Dp = 8.dp,
     offsetX: Dp = 0.dp,

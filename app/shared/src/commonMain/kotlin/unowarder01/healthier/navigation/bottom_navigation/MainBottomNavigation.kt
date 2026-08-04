@@ -41,6 +41,9 @@ fun MainBottomNavigation(
         items = mainBottomNavigationItems,
         selectedItemIndex = selectedItemIndex,
         withShadow = true,
+        containerColor = colorScheme.surfaceContainerLow,
+        indicatorColor = colorScheme.primaryContainer,
+        borderColor = colorScheme.outlineVariant,
         indicatorPadding = indicatorPadding,
         onItemClick = { index ->
             onItemSelected(index)
@@ -67,7 +70,7 @@ private fun MainBottomNavigationItem(
 ) {
     val color by animateColorAsState(
         animationSpec = tween(),
-        targetValue = if (selected) colorScheme.secondary else colorScheme.onSurfaceVariant
+        targetValue = if (selected) colorScheme.onPrimaryContainer else colorScheme.onSurfaceVariant
     )
     Box(
         contentAlignment = Alignment.Center,

@@ -1,84 +1,116 @@
 package unowarder01.healthier.core.designsystem.components.button
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import unowarder01.healthier.core.designsystem.components.button.AppButtonState.BlackWithWhiteText
-import unowarder01.healthier.core.designsystem.components.button.AppButtonState.RedWithWhiteText
-import unowarder01.healthier.core.designsystem.components.button.AppButtonState.TransparentWithPurpleText
-import unowarder01.healthier.core.designsystem.components.button.AppButtonState.WhiteWithBlackText
-import unowarder01.healthier.core.designsystem.extensions.clickableWithoutShadow
+import unowarder01.healthier.core.designsystem.components.button.AppButtonStyle.Destructive
+import unowarder01.healthier.core.designsystem.components.button.AppButtonStyle.Inverse
+import unowarder01.healthier.core.designsystem.components.button.AppButtonStyle.Outlined
+import unowarder01.healthier.core.designsystem.components.button.AppButtonStyle.Primary
+import unowarder01.healthier.core.designsystem.components.button.AppButtonStyle.Text
+import unowarder01.healthier.core.designsystem.components.button.AppButtonStyle.Tonal
 
-enum class AppButtonState {
-    BlackWithWhiteText,
-    WhiteWithBlackText,
-    RedWithWhiteText,
-    TransparentWithPurpleText,
+enum class AppButtonStyle {
+    Primary,
+    Tonal,
+    Outlined,
+    Destructive,
+    Text,
+    Inverse
 }
 
 @Composable
 fun AppButton(
     text: String,
     style: TextStyle? = null,
-    state: AppButtonState,
+    buttonStyle: AppButtonStyle,
     onClick: () -> Unit,
     modifier: Modifier
 ) {
-    val backgroundColor = when (state) {
-        BlackWithWhiteText -> colorScheme.primary
-        WhiteWithBlackText -> colorScheme.surface
-        RedWithWhiteText -> colorScheme.error
-        TransparentWithPurpleText -> Color.Transparent
-    }
-    val borderColor = when (state) {
-        WhiteWithBlackText -> colorScheme.outline
-        else -> Color.Transparent
-    }
-    val textColor = when (state) {
-        BlackWithWhiteText -> colorScheme.onPrimary
-        WhiteWithBlackText -> colorScheme.onSurface
-        RedWithWhiteText -> colorScheme.onError
-        TransparentWithPurpleText -> colorScheme.secondary
-    }
-    val clickModifier = when (state) {
-        TransparentWithPurpleText -> Modifier.clickableWithoutShadow { onClick() }
-        else -> Modifier.clickable { onClick() }
-    }
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .widthIn(min = 108.dp)
-            .height(48.dp)
-            .clip(shapes.large)
-            .background(
-                color = backgroundColor,
-                shape = shapes.large
-            )
-            .border(
-                width = 1.dp,
-                color = borderColor,
-                shape = shapes.large
-            )
-            .then(clickModifier)
-    ) {
+    val buttonModifier = modifier
+        .widthIn(min = 108.dp)
+        .height(48.dp)
+    val content = @Composable {
         Text(
             text = text,
-            color = textColor,
             style = style ?: typography.labelLarge
+        )
+    }
+    when (buttonStyle) {
+        Primary -> Button(
+            onClick = onClick,
+            modifier = buttonModifier,
+            shape = shapes.large,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorScheme.primary,
+                contentColor = colorScheme.onPrimary
+            ),
+            content = { content() }
+        )
+        Tonal -> FilledTonalButton(
+            onClick = onClick,
+            modifier = buttonModifier,
+            shape = shapes.large,
+            colors = ButtonDefaults.filledTonalButtonColors(
+                containerColor = colorScheme.secondaryContainer,
+                contentColor = colorScheme.onSecondaryContainer
+            ),
+            content = { content() }
+        )
+        Outlined -> OutlinedButton(
+            onClick = onClick,
+            modifier = buttonModifier,
+            shape = shapes.large,
+            border = BorderStroke(1.dp, colorScheme.outline),
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = Color.Transparent,
+                contentColor = colorScheme.onSurface
+            ),
+            content = { content() }
+        )
+        Destructive -> Button(
+            onClick = onClick,
+            modifier = buttonModifier,
+            shape = shapes.large,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorScheme.error,
+                contentColor = colorScheme.onError
+            ),
+            content = { content() }
+        )
+        Text -> TextButton(
+            onClick = onClick,
+            modifier = buttonModifier,
+            shape = shapes.large,
+            colors = ButtonDefaults.textButtonColors(
+                containerColor = Color.Transparent,
+                contentColor = colorScheme.primary
+            ),
+            content = { content() }
+        )
+        Inverse -> Button(
+            onClick = onClick,
+            modifier = buttonModifier,
+            shape = shapes.large,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorScheme.inverseSurface,
+                contentColor = colorScheme.inverseOnSurface
+            ),
+            content = { content() }
         )
     }
 }

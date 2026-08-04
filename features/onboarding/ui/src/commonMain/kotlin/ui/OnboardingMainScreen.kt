@@ -31,7 +31,7 @@ import ui.OnboardingContract.Listener
 import ui.OnboardingContract.State
 import ui.content.OnboardingData
 import unowarder01.healthier.core.designsystem.components.button.AppButton
-import unowarder01.healthier.core.designsystem.components.button.AppButtonState
+import unowarder01.healthier.core.designsystem.components.button.AppButtonStyle
 import unowarder01.healthier.core.designsystem.components.image.AppLogo
 import unowarder01.healthier.designsystem.generated.resources.Res
 import unowarder01.healthier.designsystem.generated.resources.onboarding_page_indicator
@@ -137,7 +137,7 @@ private fun ContentContainer() {
             .height(334.dp)
             .clip(shapes.extraLarge)
             .background(
-                color = colorScheme.secondaryContainer,
+                color = colorScheme.primaryContainer,
                 shape = shapes.extraLarge
             )
     )
@@ -178,13 +178,13 @@ private fun Buttons(
         AppButton(
             text = stringResource(item.positiveButtonText),
             style = typography.bodyLarge,
-            state = AppButtonState.BlackWithWhiteText,
+            buttonStyle = AppButtonStyle.Primary,
             onClick = { listener.onPositiveButtonClick() },
             modifier = Modifier.fillMaxWidth()
         )
         AppButton(
             text = stringResource(item.negativeButtonText),
-            state = AppButtonState.TransparentWithPurpleText,
+            buttonStyle = AppButtonStyle.Text,
             onClick = { listener.onNegativeButtonClick() },
             modifier = Modifier.padding(top = 4.dp)
         )

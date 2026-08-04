@@ -51,9 +51,18 @@ fun AppTextField(
     var isFocused by remember { mutableStateOf(false) }
     val borderColor by animateColorAsState(
         targetValue = when {
+            !enabled -> colorScheme.outlineVariant
             isError -> colorScheme.error
             isFocused -> colorScheme.primary
             else -> colorScheme.outline
+        },
+        animationSpec = tween(BORDER_ANIMATION_DURATION_MILLIS),
+    )
+    val iconColor by animateColorAsState(
+        targetValue = when {
+            isError -> colorScheme.error
+            isFocused -> colorScheme.primary
+            else -> colorScheme.onSurfaceVariant
         },
         animationSpec = tween(BORDER_ANIMATION_DURATION_MILLIS),
     )
@@ -86,7 +95,7 @@ fun AppTextField(
             {
                 AppImage(
                     image = icon,
-                    color = colorScheme.primary,
+                    color = iconColor,
                     modifier = Modifier
                         .padding(start = 18.dp)
                         .size(12.dp)
@@ -105,17 +114,17 @@ fun AppTextField(
             unfocusedTextColor = colorScheme.onSurface,
             disabledTextColor = colorScheme.onSurfaceVariant,
             errorTextColor = colorScheme.onSurface,
-            focusedContainerColor = colorScheme.surface,
-            unfocusedContainerColor = colorScheme.surface,
-            disabledContainerColor = colorScheme.surfaceVariant,
-            errorContainerColor = colorScheme.surface,
-            cursorColor = colorScheme.secondary,
+            focusedContainerColor = colorScheme.surfaceContainer,
+            unfocusedContainerColor = colorScheme.surfaceContainer,
+            disabledContainerColor = colorScheme.surfaceContainerHigh,
+            errorContainerColor = colorScheme.surfaceContainer,
+            cursorColor = colorScheme.primary,
             errorCursorColor = colorScheme.error,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
             errorIndicatorColor = Color.Transparent,
-            focusedLabelColor = colorScheme.secondary,
+            focusedLabelColor = colorScheme.primary,
             unfocusedLabelColor = colorScheme.onSurfaceVariant,
             disabledLabelColor = colorScheme.onSurfaceVariant,
             errorLabelColor = colorScheme.error,
@@ -123,11 +132,11 @@ fun AppTextField(
             unfocusedPlaceholderColor = colorScheme.onSurfaceVariant,
             disabledPlaceholderColor = colorScheme.onSurfaceVariant,
             errorPlaceholderColor = colorScheme.onSurfaceVariant,
-            focusedLeadingIconColor = colorScheme.onSurfaceVariant,
+            focusedLeadingIconColor = colorScheme.primary,
             unfocusedLeadingIconColor = colorScheme.onSurfaceVariant,
             disabledLeadingIconColor = colorScheme.onSurfaceVariant,
             errorLeadingIconColor = colorScheme.error,
-            focusedTrailingIconColor = colorScheme.onSurfaceVariant,
+            focusedTrailingIconColor = colorScheme.primary,
             unfocusedTrailingIconColor = colorScheme.onSurfaceVariant,
             disabledTrailingIconColor = colorScheme.onSurfaceVariant,
             errorTrailingIconColor = colorScheme.error,

@@ -3,6 +3,7 @@ package unowarder01.healthier.core.designsystem.components.container
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -37,7 +38,9 @@ fun <T> ContainerWithIndicator(
     onItemClick: (itemIndex: Int) -> Unit,
     itemContent: @Composable BoxScope.(index: Int, item: T) -> Unit,
     withShadow: Boolean = false,
-    containerBackgroundColor: Color = colorScheme.surface,
+    containerColor: Color = colorScheme.surfaceContainerLow,
+    indicatorColor: Color = colorScheme.primaryContainer,
+    borderColor: Color = colorScheme.outlineVariant,
     indicatorPadding: Dp = 0.dp
 ) {
     val density = LocalDensity.current
@@ -57,13 +60,19 @@ fun <T> ContainerWithIndicator(
             }
             .clip(shapes.extraLarge)
             .background(
-                color = containerBackgroundColor,
+                color = containerColor,
+                shape = shapes.extraLarge
+            )
+            .border(
+                width = 1.dp,
+                color = borderColor,
                 shape = shapes.extraLarge
             )
     ) {
         Indicator(
             itemWidth = itemWidth,
             animatedOffset = animatedOffset,
+            color = indicatorColor,
             padding = indicatorPadding
         )
         Row(
@@ -104,6 +113,7 @@ private fun RowScope.Item(
 private fun Indicator(
     itemWidth: Dp,
     animatedOffset: Dp,
+    color: Color,
     padding: Dp
 ) {
     Box(
@@ -114,7 +124,7 @@ private fun Indicator(
             .padding(padding)
             .clip(shapes.extraLarge)
             .background(
-                color = colorScheme.secondaryContainer,
+                color = color,
                 shape = shapes.extraLarge
             )
     )

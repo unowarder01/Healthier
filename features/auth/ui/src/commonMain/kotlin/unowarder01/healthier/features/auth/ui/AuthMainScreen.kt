@@ -151,7 +151,7 @@ private fun AgreementText() {
             TERMS_TAG to {},
             PRIVACY_TAG to {}
         ),
-        linkStyle = SpanStyle(color = colorScheme.onSurface),
+        linkStyle = SpanStyle(color = colorScheme.primary),
         textStyle = typography.labelSmall,
         textColor = colorScheme.onSurfaceVariant,
         modifier = Modifier.padding(vertical = 16.dp, horizontal = 24.dp)
