@@ -91,7 +91,7 @@ private fun AuthButtons(
     listener: Listener
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
         state.socialProviders.forEach { provider ->

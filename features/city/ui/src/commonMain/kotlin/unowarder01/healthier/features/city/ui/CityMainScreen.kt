@@ -79,7 +79,7 @@ fun CityMainScreen(
             state = state,
             listener = listener
         )
-        item { Spacer(modifier = Modifier.height(16.dp)) }
+        item { Spacer(modifier = Modifier.height(8.dp)) }
     }
 }
 
@@ -175,6 +175,7 @@ private fun LazyListScope.cities(
                 onClick = { listener.onCityClick() }
             )
         }
+        item { Spacer(modifier = Modifier.height(8.dp)) }
     }
 }
 
