@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -22,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
@@ -41,10 +43,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
+import unowarder01.healthier.core.designsystem.components.button.AppButton
+import unowarder01.healthier.core.designsystem.components.button.AppButtonStyle
 import unowarder01.healthier.core.designsystem.components.image.AppImage
 import unowarder01.healthier.core.designsystem.components.text_field.AppTextField
 import unowarder01.healthier.core.designsystem.extensions.getScreenWidth
 import unowarder01.healthier.designsystem.generated.resources.Res
+import unowarder01.healthier.designsystem.generated.resources.banner_fill_med_card
 import unowarder01.healthier.designsystem.generated.resources.clinic_american_hospital
 import unowarder01.healthier.designsystem.generated.resources.clinic_aversi
 import unowarder01.healthier.designsystem.generated.resources.clinic_new_hospital
@@ -68,9 +74,11 @@ fun HealthMainScreen() {
     ) {
         item { Toolbar() }
         item { Search() }
+        item { FillMedicalCardBanner() }
         item { PopularSection() }
         item { ClinicsSection() }
         item { DoctorsSection() }
+        item { Spacer(modifier = Modifier.height(108.dp)) }
     }
 }
 
@@ -140,6 +148,79 @@ private fun Search() {
         leadingIcon = Res.drawable.ic_search,
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)
     )
+}
+
+/**
+ * FILL MEDICAL CARD
+ */
+@Composable
+private fun FillMedicalCardBanner() {
+    val bannerPainter = painterResource(Res.drawable.banner_fill_med_card)
+    val imageAspectRatio = bannerPainter
+        .intrinsicSize
+        .let { size ->
+            val isFinite = size.width.isFinite() && size.height.isFinite()
+            val isGreaterZero = size.width > 0f && size.height > 0f
+            if (isFinite && isGreaterZero) {
+                size.width / size.height
+            } else {
+                1f
+            }
+        }
+    Box(
+        modifier = Modifier
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+            .fillMaxWidth()
+            .clip(shapes.medium)
+            .background(
+                color = colorScheme.onPrimary,
+                shape = shapes.medium
+            )
+            .border(
+                width = 1.dp,
+                color = colorScheme.outlineVariant,
+                shape = shapes.medium
+            )
+    ) {
+        AppImage(
+            image = Res.drawable.banner_fill_med_card,
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxWidth()
+                .aspectRatio(imageAspectRatio)
+                .align(Alignment.BottomEnd)
+        )
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .matchParentSize()
+                .padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
+        ) {
+            Text(
+                text = "Заполните медкарту",
+                color = colorScheme.onSurface,
+                style = typography.labelLarge.copy(
+                    fontWeight = FontWeight.Bold
+                )
+            )
+            Text(
+                text = "Доктор увидит важную\nинформацию ещё до приёма",
+                color = colorScheme.onSurfaceVariant,
+                style = typography.labelSmall,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+            AppButton(
+                text = "Заполнить",
+                style = typography.labelSmall,
+                shape = RoundedCornerShape(8.dp),
+                buttonStyle = AppButtonStyle.Primary,
+                onClick = {},
+                modifier = Modifier
+                    .padding(top = 11.dp)
+                    .height(32.dp)
+            )
+        }
+    }
 }
 
 /**
@@ -215,7 +296,7 @@ private fun ClinicsSection() {
             item {
                 ClinicDoctorView(
                     itemWidth = itemWidth,
-                    aspectRatio = 1f,
+                    aspectRatio = 1.33f,
                     title = clinic.first,
                     subtitle = clinic.second,
                     icon = clinic.third,
@@ -254,7 +335,7 @@ private fun DoctorsSection() {
             item {
                 ClinicDoctorView(
                     itemWidth = itemWidth,
-                    aspectRatio = 0.75f,
+                    aspectRatio = 1f,
                     title = clinic.first,
                     subtitle = clinic.second,
                     icon = clinic.third,

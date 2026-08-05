@@ -180,13 +180,17 @@ private fun Buttons(
             style = typography.bodyLarge,
             buttonStyle = AppButtonStyle.Primary,
             onClick = { listener.onPositiveButtonClick() },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
         )
         AppButton(
             text = stringResource(item.negativeButtonText),
             buttonStyle = AppButtonStyle.Text,
             onClick = { listener.onNegativeButtonClick() },
-            modifier = Modifier.padding(top = 4.dp)
+            modifier = Modifier
+                .padding(top = 4.dp)
+                .height(48.dp)
         )
     }
 }

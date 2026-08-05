@@ -1,8 +1,6 @@
 package unowarder01.healthier.core.designsystem.components.button
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
@@ -15,6 +13,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import unowarder01.healthier.core.designsystem.components.button.AppButtonStyle.Destructive
@@ -37,13 +36,11 @@ enum class AppButtonStyle {
 fun AppButton(
     text: String,
     style: TextStyle? = null,
+    shape: Shape = shapes.large,
     buttonStyle: AppButtonStyle,
     onClick: () -> Unit,
     modifier: Modifier
 ) {
-    val buttonModifier = modifier
-        .widthIn(min = 108.dp)
-        .height(48.dp)
     val content = @Composable {
         Text(
             text = text,
@@ -53,8 +50,8 @@ fun AppButton(
     when (buttonStyle) {
         Primary -> Button(
             onClick = onClick,
-            modifier = buttonModifier,
-            shape = shapes.large,
+            modifier = modifier,
+            shape = shape,
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorScheme.primary,
                 contentColor = colorScheme.onPrimary
@@ -63,8 +60,8 @@ fun AppButton(
         )
         Tonal -> FilledTonalButton(
             onClick = onClick,
-            modifier = buttonModifier,
-            shape = shapes.large,
+            modifier = modifier,
+            shape = shape,
             colors = ButtonDefaults.filledTonalButtonColors(
                 containerColor = colorScheme.secondaryContainer,
                 contentColor = colorScheme.onSecondaryContainer
@@ -73,8 +70,8 @@ fun AppButton(
         )
         Outlined -> OutlinedButton(
             onClick = onClick,
-            modifier = buttonModifier,
-            shape = shapes.large,
+            modifier = modifier,
+            shape = shape,
             border = BorderStroke(1.dp, colorScheme.outline),
             colors = ButtonDefaults.outlinedButtonColors(
                 containerColor = Color.Transparent,
@@ -84,8 +81,8 @@ fun AppButton(
         )
         Destructive -> Button(
             onClick = onClick,
-            modifier = buttonModifier,
-            shape = shapes.large,
+            modifier = modifier,
+            shape = shape,
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorScheme.error,
                 contentColor = colorScheme.onError
@@ -94,8 +91,8 @@ fun AppButton(
         )
         Text -> TextButton(
             onClick = onClick,
-            modifier = buttonModifier,
-            shape = shapes.large,
+            modifier = modifier,
+            shape = shape,
             colors = ButtonDefaults.textButtonColors(
                 containerColor = Color.Transparent,
                 contentColor = colorScheme.primary
@@ -104,8 +101,8 @@ fun AppButton(
         )
         Inverse -> Button(
             onClick = onClick,
-            modifier = buttonModifier,
-            shape = shapes.large,
+            modifier = modifier,
+            shape = shape,
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorScheme.inverseSurface,
                 contentColor = colorScheme.inverseOnSurface
