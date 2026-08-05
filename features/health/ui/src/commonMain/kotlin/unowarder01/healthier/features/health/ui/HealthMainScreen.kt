@@ -108,26 +108,26 @@ private fun Toolbar() {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(end = 16.dp)
-                .clip(shapes.large)
+                .clip(shapes.small)
                 .background(
                     color = colorScheme.surfaceContainerHigh,
-                    shape = shapes.large
+                    shape = shapes.small
                 )
                 .border(
                     width = 1.dp,
                     color = colorScheme.outlineVariant,
-                    shape = shapes.large
+                    shape = shapes.small
                 )
-                .padding(horizontal = 12.dp, vertical = 6.dp)
+                .padding(horizontal = 12.dp, vertical = 8.dp)
         ) {
             Text(
                 text = "Тбилиси",
-                color = colorScheme.onSurfaceVariant,
+                color = colorScheme.onBackground,
                 style = typography.labelSmall
             )
             AppImage(
                 image = Res.drawable.ic_dropdown,
-                color = colorScheme.onSurfaceVariant,
+                color = colorScheme.onBackground,
                 modifier = Modifier
                     .padding(start = 6.dp)
                     .size(8.dp)
