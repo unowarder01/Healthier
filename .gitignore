@@ -1,10 +1,12 @@
 *.iml
 .kotlin
 .gradle
+.build/
 **/build/
 xcuserdata
 !src/**/build/
 local.properties
+app/iosApp/Configuration/Local.xcconfig
 .idea
 .DS_Store
 captures

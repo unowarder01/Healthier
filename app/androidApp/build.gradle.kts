@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.googleMapsSecrets)
 }
 
 kotlin {
@@ -60,6 +61,13 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
+}
+
+secrets {
+    propertiesFileName = "local.properties"
+    defaultPropertiesFileName = "config.example.properties"
+    ignoreList.add("^(?!HEALTHIER_GOOGLE_MAPS_ANDROID_KEY$).+$")
 }

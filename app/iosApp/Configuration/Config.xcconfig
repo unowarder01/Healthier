@@ -1,5 +1,7 @@
 TEAM_ID=
 
+#include? "Local.xcconfig"
+
 PRODUCT_NAME=Healthier
 PRODUCT_BUNDLE_IDENTIFIER=unowarder01.healthier.Healthier$(TEAM_ID)
 
