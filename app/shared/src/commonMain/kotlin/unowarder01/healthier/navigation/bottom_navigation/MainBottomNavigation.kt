@@ -15,6 +15,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.DrawableResource
@@ -37,7 +38,8 @@ fun MainBottomNavigation(
     selectedItemIndex: Int,
     onItemSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    indicatorPadding: Dp = 4.dp
+    indicatorPadding: Dp = 4.dp,
+    scale: Float = 1f,
 ) {
     ContainerWithIndicator(
         items = mainBottomNavigationItems,
@@ -59,8 +61,9 @@ fun MainBottomNavigation(
         },
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+            .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
             .height(64.dp)
+            .scale(scale)
     )
 }
 

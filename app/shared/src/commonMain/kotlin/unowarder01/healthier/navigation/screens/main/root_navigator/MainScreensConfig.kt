@@ -25,7 +25,7 @@ sealed interface MainScreensConfig {
     data object ProfileConfig : MainScreensConfig
 }
 
-internal val childPagesItems = listOf(
+internal val childPagesItems: List<MainScreensConfig> = listOf(
     HealthConfig,
     MapConfig,
     CalendarConfig,
